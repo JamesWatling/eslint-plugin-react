@@ -1,4 +1,4 @@
-# Prevent missing props validation in a React component definition (prop-types)
+# Prevent missing props validation in a React component definition (react/prop-types)
 
 PropTypes improve the reusability of your component by validating the received data.
 
@@ -9,15 +9,15 @@ It can warn other developers if they make a mistake while reusing the component 
 The following patterns are considered warnings:
 
 ```jsx
-var Hello = React.createClass({
+var Hello = createReactClass({
   render: function() {
     return <div>Hello {this.props.name}</div>;
   }
 });
 
-var Hello = React.createClass({
+var Hello = createReactClass({
   propTypes: {
-    firstname: React.PropTypes.string.isRequired
+    firstname: PropTypes.string.isRequired
   },
   render: function() {
     return <div>Hello {this.props.firstname} {this.props.lastname}</div>; // lastname type is not defined in propTypes
@@ -32,9 +32,9 @@ function Hello({ name }) {
 Examples of correct usage without warnings:
 
 ```jsx
-var Hello = React.createClass({
+var Hello = createReactClass({
   propTypes: {
-    name: React.PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
   },
   render: function() {
     return <div>Hello {this.props.name}</div>;
@@ -48,13 +48,13 @@ class HelloEs6 extends React.Component {
   }
 }
 HelloEs6.propTypes = {
-  name: React.PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
 };
 
 // ES6 + Public Class Fields (draft: https://tc39.github.io/proposal-class-public-fields/)
 class HelloEs6WithPublicClassField extends React.Component {
   static propTypes = {
-    name: React.PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
   }
   render() {
     return <div>Hello {this.props.name}</div>;
@@ -65,15 +65,15 @@ class HelloEs6WithPublicClassField extends React.Component {
 The following patterns are not considered warnings:
 
 ```jsx
-var Hello = React.createClass({
+var Hello = createReactClass({
   render: function() {
     return <div>Hello World</div>;
   }
 });
 
-var Hello = React.createClass({
+var Hello = createReactClass({
   propTypes: {
-    name: React.PropTypes.string.isRequired
+    name: PropTypes.string.isRequired
   },
   render: function() {
     return <div>Hello {this.props.name}</div>;
@@ -81,7 +81,7 @@ var Hello = React.createClass({
 });
 
 // Referencing an external object disable the rule for the component
-var Hello = React.createClass({
+var Hello = createReactClass({
   propTypes: myPropTypes,
   render: function() {
     return <div>Hello {this.props.name}</div>;
@@ -92,7 +92,7 @@ function Hello({ name }) {
   return <div>Hello {name}</div>;
 }
 Hello.propTypes = {
-  name: React.PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
 };
 ```
 
@@ -100,9 +100,9 @@ Hello.propTypes = {
 
 This rule can take one argument to ignore some specific props during validation.
 
-```
+```js
 ...
-"prop-types": [<enabled>, { ignore: <ignore>, customValidators: <customValidator> }]
+"react/prop-types": [<enabled>, { ignore: <ignore>, customValidators: <customValidator> }]
 ...
 ```
 
@@ -123,7 +123,7 @@ As it aptly noticed in
 > Most components don't need `this.props.children`, so that makes it extra important
 to document `children` in the propTypes.
 
-Generally, you should use `React.PropTypes.node` for `children`. It accepts
+Generally, you should use `PropTypes.node` for `children`. It accepts
 anything that can be rendered: numbers, strings, elements or an array containing
 these types.
 
@@ -135,6 +135,6 @@ For this rule to work we need to detect React components, this could be very har
 
 For now we should detect components created with:
 
-* `React.createClass()`
+* `createReactClass()`
 * an ES6 class that inherit from `React.Component` or `Component`
 * a stateless function that return JSX or the result of a `React.createElement` call.

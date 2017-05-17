@@ -1,4 +1,4 @@
-# Prevent React to be incorrectly marked as unused (jsx-uses-react)
+# Prevent React to be incorrectly marked as unused (react/jsx-uses-react)
 
 JSX expands to a call to `React.createElement`, a file which includes `React`
 but only uses JSX should consider the `React` variable as used.
@@ -19,7 +19,7 @@ var React = require('react');
 // nothing to do with React
 ```
 
-```js
+```jsx
 /** @jsx Foo */
 var React = require('react');
 
@@ -28,13 +28,13 @@ var Hello = <div>Hello {this.props.name}</div>;
 
 The following patterns are not considered warnings:
 
-```js
+```jsx
 var React = require('react');
 
 var Hello = <div>Hello {this.props.name}</div>;
 ```
 
-```js
+```jsx
 /** @jsx Foo */
 var Foo = require('foo');
 

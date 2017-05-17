@@ -12,11 +12,20 @@
 var rule = require('../../../lib/rules/jsx-no-bind');
 var RuleTester = require('eslint').RuleTester;
 
+var parserOptions = {
+  ecmaVersion: 8,
+  sourceType: 'module',
+  ecmaFeatures: {
+    experimentalObjectRestSpread: true,
+    jsx: true
+  }
+};
+
 // -----------------------------------------------------------------------------
 // Tests
 // -----------------------------------------------------------------------------
 
-var ruleTester = new RuleTester();
+var ruleTester = new RuleTester({parserOptions});
 ruleTester.run('jsx-no-bind', rule, {
 
   valid: [
@@ -133,7 +142,7 @@ ruleTester.run('jsx-no-bind', rule, {
     },
     {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  render: function() {',
         '    const click = this.someMethod.bind(this);',
         '    return <div onClick={click}>Hello {this.state.name}</div>;',

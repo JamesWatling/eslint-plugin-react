@@ -11,18 +11,27 @@
 var rule = require('../../../lib/rules/no-string-refs');
 var RuleTester = require('eslint').RuleTester;
 
+var parserOptions = {
+  ecmaVersion: 8,
+  sourceType: 'module',
+  ecmaFeatures: {
+    experimentalObjectRestSpread: true,
+    jsx: true
+  }
+};
+
 require('babel-eslint');
 
 // ------------------------------------------------------------------------------
 // Tests
 // ------------------------------------------------------------------------------
 
-var ruleTester = new RuleTester();
+var ruleTester = new RuleTester({parserOptions});
 ruleTester.run('no-refs', rule, {
 
   valid: [{
     code: [
-      'var Hello = React.createClass({',
+      'var Hello = createReactClass({',
       '  componentDidMount: function() {',
       '     var component = this.hello;',
       '  },',
@@ -31,16 +40,13 @@ ruleTester.run('no-refs', rule, {
       '  }',
       '});'
     ].join('\n'),
-    parser: 'babel-eslint',
-    ecmaFeatures: {
-      jsx: true
-    }
+    parser: 'babel-eslint'
   }
   ],
 
   invalid: [{
     code: [
-      'var Hello = React.createClass({',
+      'var Hello = createReactClass({',
       '  componentDidMount: function() {',
       '     var component = this.refs.hello;',
       '  },',
@@ -50,48 +56,36 @@ ruleTester.run('no-refs', rule, {
       '});'
     ].join('\n'),
     parser: 'babel-eslint',
-    ecmaFeatures: {
-      classes: true,
-      jsx: true
-    },
     errors: [{
       message: 'Using this.refs is deprecated.'
     }]
   }, {
     code: [
-      'var Hello = React.createClass({',
+      'var Hello = createReactClass({',
       '  render: function() {',
       '    return <div ref="hello">Hello {this.props.name}</div>;',
       '  }',
       '});'
     ].join('\n'),
     parser: 'babel-eslint',
-    ecmaFeatures: {
-      classes: true,
-      jsx: true
-    },
     errors: [{
       message: 'Using string literals in ref attributes is deprecated.'
     }]
   }, {
     code: [
-      'var Hello = React.createClass({',
+      'var Hello = createReactClass({',
       '  render: function() {',
       '    return <div ref={\'hello\'}>Hello {this.props.name}</div>;',
       '  }',
       '});'
     ].join('\n'),
     parser: 'babel-eslint',
-    ecmaFeatures: {
-      classes: true,
-      jsx: true
-    },
     errors: [{
       message: 'Using string literals in ref attributes is deprecated.'
     }]
   }, {
     code: [
-      'var Hello = React.createClass({',
+      'var Hello = createReactClass({',
       '  componentDidMount: function() {',
       '     var component = this.refs.hello;',
       '  },',
@@ -101,10 +95,6 @@ ruleTester.run('no-refs', rule, {
       '});'
     ].join('\n'),
     parser: 'babel-eslint',
-    ecmaFeatures: {
-      classes: true,
-      jsx: true
-    },
     errors: [{
       message: 'Using this.refs is deprecated.'
     }, {

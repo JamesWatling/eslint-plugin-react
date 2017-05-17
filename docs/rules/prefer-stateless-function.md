@@ -1,4 +1,4 @@
-# Enforce stateless React Components to be written as a pure function (prefer-stateless-function)
+# Enforce stateless React Components to be written as a pure function (react/prefer-stateless-function)
 
 Stateless functional components are simpler than class based components and will benefit from future React performance optimizations specific to these components.
 
@@ -10,6 +10,7 @@ This rule will check your class based React components for
 * instance property other than `this.props` and `this.context`
 * extension of `React.PureComponent` (if the `ignorePureComponents` flag is true)
 * presence of `ref` attribute in JSX
+* the use of decorators
 * `render` method that return anything but JSX: `undefined`, `null`, etc. (only in React <15.0.0, see [shared settings](https://github.com/yannickcr/eslint-plugin-react/blob/master/README.md#configuration) for React version configuration)
 
 If none of these elements are found, the rule will warn you to write this component as a pure function.
@@ -17,7 +18,7 @@ If none of these elements are found, the rule will warn you to write this compon
 The following pattern is considered a warning:
 
 ```jsx
-var Hello = React.createClass({
+var Hello = createReactClass({
   render: function() {
     return <div>Hello {this.props.name}</div>;
   }
@@ -27,7 +28,11 @@ var Hello = React.createClass({
 The following pattern is not considered a warning:
 
 ```jsx
-const Foo = function(props) {
+const Foo = function(props, context) {
+  const {
+    location
+  } = context.router;
+
   return <div>{props.foo}</div>;
 };
 ```
@@ -50,7 +55,7 @@ class Foo extends React.Component {
 
 ```js
 ...
-"prefer-stateless-function": [<enabled>, { "ignorePureComponents": <ignorePureComponents> }]
+"react/prefer-stateless-function": [<enabled>, { "ignorePureComponents": <ignorePureComponents> }]
 ...
 ```
 

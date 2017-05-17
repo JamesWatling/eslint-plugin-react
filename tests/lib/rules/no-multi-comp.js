@@ -12,8 +12,10 @@ var rule = require('../../../lib/rules/no-multi-comp');
 var RuleTester = require('eslint').RuleTester;
 
 var parserOptions = {
-  ecmaVersion: 6,
+  ecmaVersion: 8,
+  sourceType: 'module',
   ecmaFeatures: {
+    experimentalObjectRestSpread: true,
     jsx: true
   }
 };
@@ -24,19 +26,18 @@ require('babel-eslint');
 // Tests
 // ------------------------------------------------------------------------------
 
-var ruleTester = new RuleTester();
+var ruleTester = new RuleTester({parserOptions});
 ruleTester.run('no-multi-comp', rule, {
 
   valid: [{
     code: [
       'var Hello = require(\'./components/Hello\');',
-      'var HelloJohn = React.createClass({',
+      'var HelloJohn = createReactClass({',
       '  render: function() {',
       '    return <Hello name="John" />;',
       '  }',
       '});'
-    ].join('\r'),
-    parserOptions: parserOptions
+    ].join('\r')
   }, {
     code: [
       'class Hello extends React.Component {',
@@ -44,11 +45,10 @@ ruleTester.run('no-multi-comp', rule, {
       '    return <div>Hello {this.props.name}</div>;',
       '  }',
       '}'
-    ].join('\r'),
-    parserOptions: parserOptions
+    ].join('\r')
   }, {
     code: [
-      'var Heading = React.createClass({',
+      'var Heading = createReactClass({',
       '  render: function() {',
       '    return (',
       '      <div>',
@@ -59,8 +59,7 @@ ruleTester.run('no-multi-comp', rule, {
       '    );',
       '  }',
       '});'
-    ].join('\r'),
-    parserOptions: parserOptions
+    ].join('\r')
   }, {
     code: [
       'function Hello(props) {',
@@ -85,26 +84,39 @@ ruleTester.run('no-multi-comp', rule, {
       '  }',
       '}'
     ].join('\r'),
-    parserOptions: parserOptions,
     options: [{
       ignoreStateless: true
     }]
+  }, {
+    // multiple non-components
+    code: [
+      'import React, { createElement } from "react"',
+      'const helperFoo = () => {',
+      '  return true;',
+      '};',
+      'function helperBar() {',
+      '  return false;',
+      '};',
+      'function RealComponent() {',
+      '  return createElement("img");',
+      '};'
+    ].join('\n'),
+    parserOptions: Object.assign({sourceType: 'module'}, parserOptions)
   }],
 
   invalid: [{
     code: [
-      'var Hello = React.createClass({',
+      'var Hello = createReactClass({',
       '  render: function() {',
       '    return <div>Hello {this.props.name}</div>;',
       '  }',
       '});',
-      'var HelloJohn = React.createClass({',
+      'var HelloJohn = createReactClass({',
       '  render: function() {',
       '    return <Hello name="John" />;',
       '  }',
       '});'
     ].join('\r'),
-    parserOptions: parserOptions,
     errors: [{
       message: 'Declare only one React component per file',
       line: 6
@@ -127,7 +139,6 @@ ruleTester.run('no-multi-comp', rule, {
       '  }',
       '}'
     ].join('\r'),
-    parserOptions: parserOptions,
     errors: [{
       message: 'Declare only one React component per file',
       line: 6
@@ -160,7 +171,6 @@ ruleTester.run('no-multi-comp', rule, {
       '  }',
       '}'
     ].join('\r'),
-    parserOptions: parserOptions,
     errors: [{
       message: 'Declare only one React component per file',
       line: 4

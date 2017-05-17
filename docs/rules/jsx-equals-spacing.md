@@ -1,4 +1,4 @@
-# Enforce or disallow spaces around equal signs in JSX attributes. (jsx-equals-spacing)
+# Enforce or disallow spaces around equal signs in JSX attributes. (react/jsx-equals-spacing)
 
 Some style guides require or disallow spaces around equal signs.
 
@@ -18,14 +18,14 @@ There are two options for the rule:
 Depending on your coding conventions, you can choose either option by specifying it in your configuration:
 
 ```json
-"jsx-equals-spacing": [2, "always"]
+"react/jsx-equals-spacing": [2, "always"]
 ```
 
 #### never
 
 When `"never"` is set, the following patterns are considered warnings:
 
-```js
+```jsx
 <Hello name = {firstname} />;
 <Hello name ={firstname} />;
 <Hello name= {firstname} />;
@@ -33,7 +33,7 @@ When `"never"` is set, the following patterns are considered warnings:
 
 The following patterns are not warnings:
 
-```js
+```jsx
 <Hello name={firstname} />;
 <Hello name />;
 <Hello {...props} />;
@@ -43,7 +43,7 @@ The following patterns are not warnings:
 
 When `"always"` is used, the following patterns are considered warnings:
 
-```js
+```jsx
 <Hello name={firstname} />;
 <Hello name ={firstname} />;
 <Hello name= {firstname} />;
@@ -51,7 +51,7 @@ When `"always"` is used, the following patterns are considered warnings:
 
 The following patterns are not warnings:
 
-```js
+```jsx
 <Hello name = {firstname} />;
 <Hello name />;
 <Hello {...props} />;

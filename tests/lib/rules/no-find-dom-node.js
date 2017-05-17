@@ -12,8 +12,10 @@ var rule = require('../../../lib/rules/no-find-dom-node');
 var RuleTester = require('eslint').RuleTester;
 
 var parserOptions = {
-  ecmaVersion: 6,
+  ecmaVersion: 8,
+  sourceType: 'module',
   ecmaFeatures: {
+    experimentalObjectRestSpread: true,
     jsx: true
   }
 };
@@ -22,26 +24,24 @@ var parserOptions = {
 // Tests
 // ------------------------------------------------------------------------------
 
-var ruleTester = new RuleTester();
+var ruleTester = new RuleTester({parserOptions});
 ruleTester.run('no-find-dom-node', rule, {
 
   valid: [{
     code: [
       'var Hello = function() {};'
-    ].join('\n'),
-    parserOptions: parserOptions
+    ].join('\n')
   }, {
     code: [
-      'var Hello = React.createClass({',
+      'var Hello = createReactClass({',
       '  render: function() {',
       '    return <div>Hello</div>;',
       '  }',
       '});'
-    ].join('\n'),
-    parserOptions: parserOptions
+    ].join('\n')
   }, {
     code: [
-      'var Hello = React.createClass({',
+      'var Hello = createReactClass({',
       '  componentDidMount: function() {',
       '    someNonMemberFunction(arg);',
       '    this.someFunc = React.findDOMNode;',
@@ -50,11 +50,10 @@ ruleTester.run('no-find-dom-node', rule, {
       '    return <div>Hello</div>;',
       '  }',
       '});'
-    ].join('\n'),
-    parserOptions: parserOptions
+    ].join('\n')
   }, {
     code: [
-      'var Hello = React.createClass({',
+      'var Hello = createReactClass({',
       '  componentDidMount: function() {',
       '    React.someFunc(this);',
       '  },',
@@ -62,13 +61,12 @@ ruleTester.run('no-find-dom-node', rule, {
       '    return <div>Hello</div>;',
       '  }',
       '});'
-    ].join('\n'),
-    parserOptions: parserOptions
+    ].join('\n')
   }],
 
   invalid: [{
     code: [
-      'var Hello = React.createClass({',
+      'var Hello = createReactClass({',
       '  componentDidMount: function() {',
       '    React.findDOMNode(this).scrollIntoView();',
       '  },',
@@ -77,13 +75,12 @@ ruleTester.run('no-find-dom-node', rule, {
       '  }',
       '});'
     ].join('\n'),
-    parserOptions: parserOptions,
     errors: [{
       message: 'Do not use findDOMNode'
     }]
   }, {
     code: [
-      'var Hello = React.createClass({',
+      'var Hello = createReactClass({',
       '  componentDidMount: function() {',
       '    ReactDOM.findDOMNode(this).scrollIntoView();',
       '  },',
@@ -92,7 +89,6 @@ ruleTester.run('no-find-dom-node', rule, {
       '  }',
       '});'
     ].join('\n'),
-    parserOptions: parserOptions,
     errors: [{
       message: 'Do not use findDOMNode'
     }]
@@ -107,7 +103,6 @@ ruleTester.run('no-find-dom-node', rule, {
       '  }',
       '};'
     ].join('\n'),
-    parserOptions: parserOptions,
     errors: [{
       message: 'Do not use findDOMNode'
     }]

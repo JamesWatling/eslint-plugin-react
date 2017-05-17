@@ -1,4 +1,4 @@
-# Prevent usage of unwrapped JSX strings (jsx-no-literals)
+# Prevent usage of unwrapped JSX strings (react/jsx-no-literals)
 
 In JSX when using a literal string you can wrap it in a JSX container `{'TEXT'}`.
 This rules requires that you wrap all literal strings.
@@ -8,13 +8,13 @@ Prevents any odd artifacts of highlighters if your unwrapped string contains an 
 
 The following patterns are considered warnings:
 
-```javascript
+```jsx
 var Hello = <div>test</div>;
 ```
 
 The following patterns are not considered warnings:
 
-```javascript
+```jsx
 var Hello = <div>{'test'}</div>;
 ```
 

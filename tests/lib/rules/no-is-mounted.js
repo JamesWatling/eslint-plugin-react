@@ -12,8 +12,10 @@ var rule = require('../../../lib/rules/no-is-mounted');
 var RuleTester = require('eslint').RuleTester;
 
 var parserOptions = {
-  ecmaVersion: 6,
+  ecmaVersion: 8,
+  sourceType: 'module',
   ecmaFeatures: {
+    experimentalObjectRestSpread: true,
     jsx: true
   }
 };
@@ -22,27 +24,25 @@ var parserOptions = {
 // Tests
 // ------------------------------------------------------------------------------
 
-var ruleTester = new RuleTester();
+var ruleTester = new RuleTester({parserOptions});
 ruleTester.run('no-is-mounted', rule, {
 
   valid: [{
     code: [
       'var Hello = function() {',
       '};'
-    ].join('\n'),
-    parserOptions: parserOptions
+    ].join('\n')
   }, {
     code: [
-      'var Hello = React.createClass({',
+      'var Hello = createReactClass({',
       '  render: function() {',
       '    return <div>Hello</div>;',
       '  }',
       '});'
-    ].join('\n'),
-    parserOptions: parserOptions
+    ].join('\n')
   }, {
     code: [
-      'var Hello = React.createClass({',
+      'var Hello = createReactClass({',
       '  componentDidUpdate: function() {',
       '    someNonMemberFunction(arg);',
       '    this.someFunc = this.isMounted;',
@@ -51,13 +51,12 @@ ruleTester.run('no-is-mounted', rule, {
       '    return <div>Hello</div>;',
       '  }',
       '});'
-    ].join('\n'),
-    parserOptions: parserOptions
+    ].join('\n')
   }],
 
   invalid: [{
     code: [
-      'var Hello = React.createClass({',
+      'var Hello = createReactClass({',
       '  componentDidUpdate: function() {',
       '    if (!this.isMounted()) {',
       '      return;',
@@ -68,13 +67,12 @@ ruleTester.run('no-is-mounted', rule, {
       '  }',
       '});'
     ].join('\n'),
-    parserOptions: parserOptions,
     errors: [{
       message: 'Do not use isMounted'
     }]
   }, {
     code: [
-      'var Hello = React.createClass({',
+      'var Hello = createReactClass({',
       '  someMethod: function() {',
       '    if (!this.isMounted()) {',
       '      return;',
@@ -85,7 +83,6 @@ ruleTester.run('no-is-mounted', rule, {
       '  }',
       '});'
     ].join('\n'),
-    parserOptions: parserOptions,
     errors: [{
       message: 'Do not use isMounted'
     }]
@@ -102,7 +99,6 @@ ruleTester.run('no-is-mounted', rule, {
       '  }',
       '};'
     ].join('\n'),
-    parserOptions: parserOptions,
     errors: [{
       message: 'Do not use isMounted'
     }]

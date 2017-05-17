@@ -12,7 +12,8 @@ var rule = require('../../../lib/rules/prop-types');
 var RuleTester = require('eslint').RuleTester;
 
 var parserOptions = {
-  ecmaVersion: 6,
+  ecmaVersion: 8,
+  sourceType: 'module',
   ecmaFeatures: {
     experimentalObjectRestSpread: true,
     jsx: true
@@ -31,46 +32,43 @@ require('babel-eslint');
 // Tests
 // ------------------------------------------------------------------------------
 
-var ruleTester = new RuleTester();
+var ruleTester = new RuleTester({parserOptions});
 ruleTester.run('prop-types', rule, {
 
   valid: [
     {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  propTypes: {',
-        '    name: React.PropTypes.string.isRequired',
+        '    name: PropTypes.string.isRequired',
         '  },',
         '  render: function() {',
         '    return <div>Hello {this.props.name}</div>;',
         '  }',
         '});'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  propTypes: {',
-        '    name: React.PropTypes.object.isRequired',
+        '    name: PropTypes.object.isRequired',
         '  },',
         '  render: function() {',
         '    return <div>Hello {this.props.name.firstname}</div>;',
         '  }',
         '});'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  render: function() {',
         '    return <div>Hello World</div>;',
         '  }',
         '});'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  render: function() {',
         '    return <div>Hello World {this.props.children}</div>;',
         '  }',
@@ -78,48 +76,43 @@ ruleTester.run('prop-types', rule, {
       ].join('\n'),
       options: [{
         ignore: ['children']
-      }],
-      parserOptions: parserOptions
+      }]
     }, {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  render: function() {',
         '    var props = this.props;',
         '    return <div>Hello World</div>;',
         '  }',
         '});'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  render: function() {',
         '    var propName = "foo";',
         '    return <div>Hello World {this.props[propName]}</div>;',
         '  }',
         '});'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  propTypes: externalPropTypes,',
         '  render: function() {',
         '    return <div>Hello {this.props.name}</div>;',
         '  }',
         '});'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  propTypes: externalPropTypes.mySharedPropTypes,',
         '  render: function() {',
         '    return <div>Hello {this.props.name}</div>;',
         '  }',
         '});'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
         'class Hello extends React.Component {',
@@ -127,8 +120,7 @@ ruleTester.run('prop-types', rule, {
         '    return <div>Hello World</div>;',
         '  }',
         '}'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
         'class Hello extends React.Component {',
@@ -137,16 +129,15 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}',
         'Hello.propTypes = {',
-        '  firstname: React.PropTypes.string',
+        '  firstname: PropTypes.string',
         '};',
-        'Hello.propTypes.lastname = React.PropTypes.string;'
-      ].join('\n'),
-      parserOptions: parserOptions
+        'Hello.propTypes.lastname = PropTypes.string;'
+      ].join('\n')
     }, {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  propTypes: {',
-        '    name: React.PropTypes.object.isRequired',
+        '    name: PropTypes.object.isRequired',
         '  },',
         '  render: function() {',
         '    var user = {',
@@ -155,8 +146,7 @@ ruleTester.run('prop-types', rule, {
         '    return <div>Hello {user.name}</div>;',
         '  }',
         '});'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
         'class Hello {',
@@ -164,30 +154,27 @@ ruleTester.run('prop-types', rule, {
         '    return \'Hello\' + this.props.name;',
         '  }',
         '}'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
         'class Hello {',
         '  method;',
         '}'
       ].join('\n'),
-      parser: 'babel-eslint',
-      parserOptions: parserOptions
+      parser: 'babel-eslint'
     }, {
       code: [
         'class Hello extends React.Component {',
         '  static get propTypes() {',
         '    return {',
-        '      name: React.PropTypes.string',
+        '      name: PropTypes.string',
         '    };',
         '  }',
         '  render() {',
         '    return <div>Hello {this.props.name}</div>;',
         '  }',
         '}'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
         'class Hello extends React.Component {',
@@ -197,11 +184,10 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}',
         'Hello.propTypes = {',
-        '  firstname: React.PropTypes.string',
+        '  firstname: PropTypes.string',
         '};'
       ].join('\n'),
-      parser: 'babel-eslint',
-      parserOptions: parserOptions
+      parser: 'babel-eslint'
     }, {
       code: [
         'class Hello extends React.Component {',
@@ -210,21 +196,19 @@ ruleTester.run('prop-types', rule, {
         '    return <div>Hello {firstname}</div>;',
         '  }',
         '}'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
         'class Hello extends React.Component {',
         '  static propTypes = {',
-        '    name: React.PropTypes.string',
+        '    name: PropTypes.string',
         '  };',
         '  render() {',
         '    return <div>Hello {this.props.name}</div>;',
         '  }',
         '}'
       ].join('\n'),
-      parser: 'babel-eslint',
-      parserOptions: parserOptions
+      parser: 'babel-eslint'
     }, {
       code: [
         'class Hello extends React.Component {',
@@ -233,25 +217,23 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}',
         'Hello.propTypes = {',
-        '  \'firstname\': React.PropTypes.string',
+        '  \'firstname\': PropTypes.string',
         '};'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
         'class Hello extends React.Component {',
         '  render() {',
-        '    if (this.props.hasOwnProperty(\'firstname\')) {',
+        '    if (Object.prototype.hasOwnProperty.call(this.props, \'firstname\')) {',
         '      return <div>Hello {this.props.firstname}</div>;',
         '    }',
         '    return <div>Hello</div>;',
         '  }',
         '}',
         'Hello.propTypes = {',
-        '  \'firstname\': React.PropTypes.string',
+        '  \'firstname\': PropTypes.string',
         '};'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
         'class Hello extends React.Component {',
@@ -261,11 +243,10 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}',
         'Hello.propTypes = {};',
-        'Hello.propTypes.a = React.PropTypes.shape({',
-        '  b: React.PropTypes.string',
+        'Hello.propTypes.a = PropTypes.shape({',
+        '  b: PropTypes.string',
         '});'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
         'class Hello extends React.Component {',
@@ -275,14 +256,13 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}',
         'Hello.propTypes = {',
-        '  a: React.PropTypes.shape({',
-        '    b: React.PropTypes.shape({',
+        '  a: PropTypes.shape({',
+        '    b: PropTypes.shape({',
         '    })',
         '  })',
         '};',
-        'Hello.propTypes.a.b.c = React.PropTypes.number;'
-      ].join('\n'),
-      parserOptions: parserOptions
+        'Hello.propTypes.a.b.c = PropTypes.number;'
+      ].join('\n')
     }, {
       code: [
         'class Hello extends React.Component {',
@@ -294,16 +274,15 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}',
         'Hello.propTypes = {',
-        '  a: React.PropTypes.objectOf(',
-        '    React.PropTypes.shape({',
-        '      c: React.PropTypes.number,',
-        '      d: React.PropTypes.string,',
-        '      e: React.PropTypes.array',
+        '  a: PropTypes.objectOf(',
+        '    PropTypes.shape({',
+        '      c: PropTypes.number,',
+        '      d: PropTypes.string,',
+        '      e: PropTypes.array',
         '    })',
         '  )',
         '};'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
         'class Hello extends React.Component {',
@@ -317,16 +296,15 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}',
         'Hello.propTypes = {',
-        '  a: React.PropTypes.arrayOf(',
-        '    React.PropTypes.shape({',
-        '      c: React.PropTypes.number,',
-        '      d: React.PropTypes.string,',
-        '      e: React.PropTypes.array',
+        '  a: PropTypes.arrayOf(',
+        '    PropTypes.shape({',
+        '      c: PropTypes.number,',
+        '      d: PropTypes.string,',
+        '      e: PropTypes.array',
         '    })',
         '  )',
         '};'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
         'class Hello extends React.Component {',
@@ -336,13 +314,12 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}',
         'Hello.propTypes = {',
-        '  a: React.PropTypes.oneOfType([',
-        '    React.PropTypes.array,',
-        '    React.PropTypes.string',
+        '  a: PropTypes.oneOfType([',
+        '    PropTypes.array,',
+        '    PropTypes.string',
         '  ])',
         '};'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
         'class Hello extends React.Component {',
@@ -355,18 +332,17 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}',
         'Hello.propTypes = {',
-        '  a: React.PropTypes.oneOfType([',
-        '    React.PropTypes.shape({',
-        '      c: React.PropTypes.number,',
-        '      e: React.PropTypes.array',
+        '  a: PropTypes.oneOfType([',
+        '    PropTypes.shape({',
+        '      c: PropTypes.number,',
+        '      e: PropTypes.array',
         '    }).isRequired,',
-        '    React.PropTypes.arrayOf(',
-        '      React.PropTypes.bool',
+        '    PropTypes.arrayOf(',
+        '      PropTypes.bool',
         '    )',
         '  ])',
         '};'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
         'class Hello extends React.Component {',
@@ -377,10 +353,9 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}',
         'Hello.propTypes = {',
-        '  a: React.PropTypes.instanceOf(Hello)',
+        '  a: PropTypes.instanceOf(Hello)',
         '};'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
         'class Hello extends React.Component {',
@@ -401,14 +376,13 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}',
         'Hello.propTypes = {',
-        '  arr: React.PropTypes.array,',
-        '  bo: React.PropTypes.bool.isRequired,',
-        '  fu: React.PropTypes.func,',
-        '  numb: React.PropTypes.number,',
-        '  stri: React.PropTypes.string',
+        '  arr: PropTypes.array,',
+        '  bo: PropTypes.bool.isRequired,',
+        '  fu: PropTypes.func,',
+        '  numb: PropTypes.number,',
+        '  stri: PropTypes.string',
         '};'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
         'class Hello extends React.Component {',
@@ -421,8 +395,8 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}',
         'Hello.propTypes = {',
-        '  "propX": React.PropTypes.string,',
-        '  "aria-controls": React.PropTypes.string',
+        '  "propX": PropTypes.string,',
+        '  "aria-controls": PropTypes.string',
         '};'
       ].join('\n'),
       parser: 'babel-eslint'
@@ -435,10 +409,9 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}',
         'Hello.propTypes = {',
-        '  "some.value": React.PropTypes.string',
+        '  "some.value": PropTypes.string',
         '};'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
         'class Hello extends React.Component {',
@@ -448,10 +421,9 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}',
         'Hello.propTypes = {',
-        '  "arr": React.PropTypes.array',
+        '  "arr": PropTypes.array',
         '};'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
         'class Hello extends React.Component {',
@@ -461,17 +433,16 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}',
         'Hello.propTypes = {',
-        '  "arr": React.PropTypes.arrayOf(',
-        '    React.PropTypes.shape({"some.value": React.PropTypes.string})',
+        '  "arr": PropTypes.arrayOf(',
+        '    PropTypes.shape({"some.value": PropTypes.string})',
         '  )',
         '};'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
-        'var TestComp1 = React.createClass({',
+        'var TestComp1 = createReactClass({',
         '  propTypes: {',
-        '    size: React.PropTypes.string',
+        '    size: PropTypes.string',
         '  },',
         '  render: function() {',
         '    var foo = {',
@@ -481,8 +452,7 @@ ruleTester.run('prop-types', rule, {
         '    return <div>{icons}</div>;',
         '  }',
         '});'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
         'class Hello extends React.Component {',
@@ -521,20 +491,19 @@ ruleTester.run('prop-types', rule, {
       parser: 'babel-eslint'
     }, {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  propTypes: {',
-        '    router: React.PropTypes.func',
+        '    router: PropTypes.func',
         '  },',
         '  render: function() {',
         '    var nextPath = this.props.router.getCurrentQuery().nextPath;',
         '    return <div>{nextPath}</div>;',
         '  }',
         '});'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  propTypes: {',
         '    firstname: CustomValidator.string',
         '  },',
@@ -543,11 +512,10 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '});'
       ].join('\n'),
-      options: [{customValidators: ['CustomValidator']}],
-      parserOptions: parserOptions
+      options: [{customValidators: ['CustomValidator']}]
     }, {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  propTypes: {',
         '    outer: CustomValidator.shape({',
         '      inner: CustomValidator.map',
@@ -558,13 +526,12 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '});'
       ].join('\n'),
-      options: [{customValidators: ['CustomValidator']}],
-      parserOptions: parserOptions
+      options: [{customValidators: ['CustomValidator']}]
     }, {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  propTypes: {',
-        '    outer: React.PropTypes.shape({',
+        '    outer: PropTypes.shape({',
         '      inner: CustomValidator.string',
         '    })',
         '  },',
@@ -573,14 +540,13 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '});'
       ].join('\n'),
-      options: [{customValidators: ['CustomValidator']}],
-      parserOptions: parserOptions
+      options: [{customValidators: ['CustomValidator']}]
     }, {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  propTypes: {',
         '    outer: CustomValidator.shape({',
-        '      inner: React.PropTypes.string',
+        '      inner: PropTypes.string',
         '    })',
         '  },',
         '  render: function() {',
@@ -588,21 +554,19 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '});'
       ].join('\n'),
-      options: [{customValidators: ['CustomValidator']}],
-      parserOptions: parserOptions
+      options: [{customValidators: ['CustomValidator']}]
     }, {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  propTypes: {',
-        '    name: React.PropTypes.string',
+        '    name: PropTypes.string',
         '  },',
         '  render: function() {',
         '    return <div>{this.props.name.get("test")}</div>;',
         '  }',
         '});'
       ].join('\n'),
-      options: [{customValidators: ['CustomValidator']}],
-      parserOptions: parserOptions
+      options: [{customValidators: ['CustomValidator']}]
     }, {
       code: [
         'class Comp1 extends Component {',
@@ -625,22 +589,21 @@ ruleTester.run('prop-types', rule, {
       parser: 'babel-eslint'
     }, {
       code: [
-        'const SomeComponent = React.createClass({',
+        'const SomeComponent = createReactClass({',
         '  propTypes: SomeOtherComponent.propTypes',
         '});'
       ].join('\n'),
       parser: 'babel-eslint'
     }, {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  render: function() {',
         '    let { a, ...b } = obj;',
         '    let c = { ...d };',
         '    return <div />;',
         '  }',
         '});'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
         'class Hello extends React.Component {',
@@ -649,8 +612,7 @@ ruleTester.run('prop-types', rule, {
         '    return <div>Hello World</div>;',
         '  }',
         '}'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
         'class Hello extends React.Component {',
@@ -661,10 +623,9 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}',
         'Hello.propTypes = {',
-        '  users: React.PropTypes.arrayOf(React.PropTypes.object)',
+        '  users: PropTypes.arrayOf(PropTypes.object)',
         '};'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
         'class Hello extends React.Component {',
@@ -673,8 +634,7 @@ ruleTester.run('prop-types', rule, {
         '    return <div>Hello</div>;',
         '  }',
         '}'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
         'class Hello extends React.Component {',
@@ -730,7 +690,7 @@ ruleTester.run('prop-types', rule, {
         '      return <div>Hello {this.props.name}</div>;',
         '    }',
         '  }',
-        '  Hello.propTypes = { name: React.PropTypes.string };',
+        '  Hello.propTypes = { name: PropTypes.string };',
         '  return Hello;',
         '}',
         'module.exports = HelloComponent();'
@@ -739,8 +699,8 @@ ruleTester.run('prop-types', rule, {
     }, {
       code: [
         'function HelloComponent() {',
-        '  var Hello = React.createClass({',
-        '    propTypes: { name: React.PropTypes.string },',
+        '  var Hello = createReactClass({',
+        '    propTypes: { name: PropTypes.string },',
         '    render: function() {',
         '      return <div>Hello {this.props.name}</div>;',
         '    }',
@@ -782,8 +742,8 @@ ruleTester.run('prop-types', rule, {
         '  return <ul>{team}</ul>;',
         '};',
         'Hello.propTypes = {',
-        '  names: React.PropTypes.array,',
-        '  company: React.PropTypes.string',
+        '  names: PropTypes.array,',
+        '  company: PropTypes.string',
         '};'
       ].join('\n'),
       parser: 'babel-eslint'
@@ -816,14 +776,14 @@ ruleTester.run('prop-types', rule, {
         '}',
         'if (process.env.NODE_ENV !== \'production\') {',
         '  FooBar.propTypes = {',
-        '    bar: React.PropTypes.string',
+        '    bar: PropTypes.string',
         '  }',
         '}'
       ].join('\n'),
       parser: 'babel-eslint'
     }, {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  render: function() {',
         '    var {...other} = this.props;',
         '    return (',
@@ -831,8 +791,7 @@ ruleTester.run('prop-types', rule, {
         '    );',
         '  }',
         '});'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
         'const statelessComponent = (props) => {',
@@ -844,8 +803,7 @@ ruleTester.run('prop-types', rule, {
         'statelessComponent.propTypes = {',
         '  someProp: PropTypes.string',
         '};'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
         'const statelessComponent = ({ someProp }) => {',
@@ -857,8 +815,7 @@ ruleTester.run('prop-types', rule, {
         'statelessComponent.propTypes = {',
         '  someProp: PropTypes.string',
         '};'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
         'const statelessComponent = function({ someProp }) {',
@@ -870,8 +827,7 @@ ruleTester.run('prop-types', rule, {
         'statelessComponent.propTypes = {',
         '  someProp: PropTypes.string',
         '};'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
         'function statelessComponent({ someProp }) {',
@@ -883,29 +839,25 @@ ruleTester.run('prop-types', rule, {
         'statelessComponent.propTypes = {',
         '  someProp: PropTypes.string',
         '};'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
         'function notAComponent({ something }) {',
         '  return something + 1;',
         '};'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
         'const notAComponent = function({ something }) {',
         '  return something + 1;',
         '};'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
         'const notAComponent = ({ something }) => {',
         '  return something + 1;',
         '};'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       // Validation is ignored on reassigned props object
       code: [
@@ -1100,14 +1052,13 @@ ruleTester.run('prop-types', rule, {
         '    }',
         '};',
         'const otherPropTypes = {',
-        '    lastName: React.PropTypes.string',
+        '    lastName: PropTypes.string',
         '};',
         'Hello.propTypes = {',
         '    ...otherPropTypes,',
-        '    firstName: React.PropTypes.string',
+        '    firstName: PropTypes.string',
         '};'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       // Ignore destructured function arguments
       code: [
@@ -1116,8 +1067,7 @@ ruleTester.run('prop-types', rule, {
         '    return ["string"].map(({length}) => <div>{length}</div>);',
         '  }',
         '}'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       // Flow annotations on stateless components
       code: [
@@ -1167,8 +1117,7 @@ ruleTester.run('prop-types', rule, {
         '    <div/>',
         '  )',
         '}'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
         'function JobList(props) {',
@@ -1230,8 +1179,7 @@ ruleTester.run('prop-types', rule, {
         '  const {...rest} = props;',
         '  return <div>Hello</div>;',
         '}'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
         'let Greetings = class extends React.Component {',
@@ -1240,10 +1188,9 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '};',
         'Greetings.propTypes = {',
-        '  name: React.PropTypes.string',
+        '  name: PropTypes.string',
         '}'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
         'let Greetings = {',
@@ -1254,10 +1201,9 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}',
         'Greetings.Hello.propTypes = {',
-        '  name: React.PropTypes.string',
+        '  name: PropTypes.string',
         '};'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
         'let Greetings = {};',
@@ -1267,10 +1213,9 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '};',
         'Greetings.Hello.propTypes = {',
-        '  name: React.PropTypes.string',
+        '  name: PropTypes.string',
         '}'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
         'function Hello({names}) {',
@@ -1307,24 +1252,22 @@ ruleTester.run('prop-types', rule, {
       parser: 'babel-eslint'
     }, {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  render: function() {',
         '    return <div>{this.props.name}</div>;',
         '  }',
         '});'
       ].join('\n'),
-      options: [{skipUndeclared: true}],
-      parserOptions: parserOptions
+      options: [{skipUndeclared: true}]
     }, {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  render: function() {',
         '    return <div>{this.props.name}</div>;',
         '  }',
         '});'
       ].join('\n'),
-      options: [{skipUndeclared: true}],
-      parserOptions: parserOptions
+      options: [{skipUndeclared: true}]
     }, {
       code: [
         'class Hello extends React.Component {',
@@ -1333,49 +1276,132 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}'
       ].join('\n'),
-      options: [{skipUndeclared: true}],
-      parserOptions: parserOptions
+      options: [{skipUndeclared: true}]
     }, {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  propTypes: {',
-        '    name: React.PropTypes.object.isRequired',
+        '    name: PropTypes.object.isRequired',
         '  },',
         '  render: function() {',
         '    return <div>{this.props.name}</div>;',
         '  }',
         '});'
       ].join('\n'),
-      options: [{skipUndeclared: true}],
-      parserOptions: parserOptions
+      options: [{skipUndeclared: true}]
     }, {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  propTypes: {',
-        '    name: React.PropTypes.object.isRequired',
+        '    name: PropTypes.object.isRequired',
         '  },',
         '  render: function() {',
         '    return <div>{this.props.name}</div>;',
         '  }',
         '});'
       ].join('\n'),
-      options: [{skipUndeclared: false}],
-      parserOptions: parserOptions
+      options: [{skipUndeclared: false}]
+    }, {
+      // Async functions can't be components.
+      code: [
+        'var Hello = async function(props) {',
+        '  return <div>Hello {props.name}</div>;',
+        '}'
+      ].join('\n'),
+      parser: 'babel-eslint'
+    }, {
+      // Async functions can't be components.
+      code: [
+        'async function Hello(props) {',
+        '  return <div>Hello {props.name}</div>;',
+        '}'
+      ].join('\n'),
+      parser: 'babel-eslint'
+    }, {
+      // Async functions can't be components.
+      code: [
+        'var Hello = async (props) => {',
+        '  return <div>Hello {props.name}</div>;',
+        '}'
+      ].join('\n'),
+      parser: 'babel-eslint'
+    }, {
+      // Flow annotations with variance
+      code: [
+        'type Props = {',
+        '  +firstname: string;',
+        '  -lastname: string;',
+        '};',
+        'function Hello(props: Props): React.Element {',
+        '  const {firstname, lastname} = props;',
+        '  return <div>Hello {firstname} {lastname}</div>',
+        '}'
+      ].join('\n'),
+      parser: 'babel-eslint'
+    }, {
+      code: [
+        'class Hello extends React.Component {',
+        '  async onSelect({ name }) {',
+        '    return null;',
+        '  }',
+        '  render() {',
+        '    return <Greeting onSelect={this.onSelect} />;',
+        '  }',
+        '}'
+      ].join('\n')
+    }, {
+      code: [
+        'export class Example extends Component {',
+        '  static propTypes = {',
+        '    onDelete: PropTypes.func.isRequired',
+        '  }',
+        '  handleDeleteConfirm = () => {',
+        '    this.props.onDelete();',
+        '  };',
+        '  handleSubmit = async ({certificate, key}) => {};',
+        '}'
+      ].join('\n'),
+      parser: 'babel-eslint'
+    }, {
+      code: [
+        'type Person = {',
+        '  ...data,',
+        '  lastname: string',
+        '};',
+        'class Hello extends React.Component {',
+        '  props: Person;',
+        '  render () {',
+        '    return <div>Hello {this.props.firstname}</div>;',
+        '  }',
+        '}'
+      ].join('\n'),
+      parser: 'babel-eslint'
+    }, {
+      code: [
+        'type Person = {|',
+        '  ...data,',
+        '  lastname: string',
+        '|};',
+        'class Hello extends React.Component {',
+        '  props: Person;',
+        '  render () {',
+        '    return <div>Hello {this.props.firstname}</div>;',
+        '  }',
+        '}'
+      ].join('\n'),
+      parser: 'babel-eslint'
     }
   ],
 
   invalid: [
     {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  render: function() {',
         '    return React.createElement("div", {}, this.props.name);',
         '  }',
         '});'
       ].join('\n'),
-      ecmaFeatures: {
-        jsx: false
-      },
       errors: [{
         message: '\'name\' is missing in props validation',
         line: 3,
@@ -1384,13 +1410,12 @@ ruleTester.run('prop-types', rule, {
       }]
     }, {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  render: function() {',
         '    return <div>Hello {this.props.name}</div>;',
         '  }',
         '});'
       ].join('\n'),
-      parserOptions: parserOptions,
       errors: [{
         message: '\'name\' is missing in props validation',
         line: 3,
@@ -1405,7 +1430,6 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}'
       ].join('\n'),
-      parserOptions: parserOptions,
       errors: [{
         message: '\'name\' is missing in props validation',
         line: 3,
@@ -1421,7 +1445,6 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}'
       ].join('\n'),
-      parserOptions: parserOptions,
       errors: [{
         message: '\'name\' is missing in props validation',
         line: 4,
@@ -1436,10 +1459,9 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}',
         'Hello.propTypes = {',
-        '  firstname: React.PropTypes.string',
+        '  firstname: PropTypes.string',
         '};'
       ].join('\n'),
-      parserOptions: parserOptions,
       errors: [{
         message: '\'lastname\' is missing in props validation'
       }]
@@ -1451,7 +1473,7 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}',
         'Hello.propTypes = {',
-        '  name: React.PropTypes.string',
+        '  name: PropTypes.string',
         '};',
         'class HelloBis extends React.Component {',
         '  render() {',
@@ -1459,27 +1481,25 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}'
       ].join('\n'),
-      parserOptions: parserOptions,
       errors: [{
         message: '\'name\' is missing in props validation'
       }]
     }, {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  propTypes: {',
-        '    name: React.PropTypes.string.isRequired',
+        '    name: PropTypes.string.isRequired',
         '  },',
         '  render: function() {',
         '    return <div>Hello {this.props.name} and {this.props.propWithoutTypeDefinition}</div>;',
         '  }',
         '});',
-        'var Hello2 = React.createClass({',
+        'var Hello2 = createReactClass({',
         '  render: function() {',
         '    return <div>Hello {this.props.name}</div>;',
         '  }',
         '});'
       ].join('\n'),
-      parserOptions: parserOptions,
       errors: [{
         message: '\'propWithoutTypeDefinition\' is missing in props validation'
       }, {
@@ -1494,10 +1514,9 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}',
         'Hello.propTypes = {',
-        '  firstname: React.PropTypes.string',
+        '  firstname: PropTypes.string',
         '};'
       ].join('\n'),
-      parserOptions: parserOptions,
       errors: [{
         message: '\'lastname\' is missing in props validation'
       }]
@@ -1505,7 +1524,7 @@ ruleTester.run('prop-types', rule, {
       code: [
         'class Hello extends React.Component {',
         '  static propTypes: { ',
-        '    firstname: React.PropTypes.string',
+        '    firstname: PropTypes.string',
         '  };',
         '  render() {',
         '    return <div>Hello {this.props.firstname}</div>;',
@@ -1513,7 +1532,6 @@ ruleTester.run('prop-types', rule, {
         '}'
       ].join('\n'),
       parser: 'babel-eslint',
-      parserOptions: parserOptions,
       errors: [{
         message: '\'firstname\' is missing in props validation'
       }]
@@ -1526,11 +1544,10 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}',
         'Hello.propTypes = {',
-        '  a: React.PropTypes.shape({',
+        '  a: PropTypes.shape({',
         '  })',
         '};'
       ].join('\n'),
-      parserOptions: parserOptions,
       errors: [{
         message: '\'a.b\' is missing in props validation'
       }]
@@ -1543,13 +1560,12 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}',
         'Hello.propTypes = {',
-        '  a: React.PropTypes.shape({',
-        '    b: React.PropTypes.shape({',
+        '  a: PropTypes.shape({',
+        '    b: PropTypes.shape({',
         '    })',
         '  })',
         '};'
       ].join('\n'),
-      parserOptions: parserOptions,
       errors: [{
         message: '\'a.b.c\' is missing in props validation'
       }]
@@ -1564,13 +1580,12 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}',
         'Hello.propTypes = {',
-        '  a: React.PropTypes.objectOf(',
-        '    React.PropTypes.shape({',
+        '  a: PropTypes.objectOf(',
+        '    PropTypes.shape({',
         '    })',
         '  )',
         '};'
       ].join('\n'),
-      parserOptions: parserOptions,
       errors: [
         {message: '\'a.b.c\' is missing in props validation'},
         {message: '\'a.__.d\' is missing in props validation'},
@@ -1590,13 +1605,12 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}',
         'Hello.propTypes = {',
-        '  a: React.PropTypes.arrayOf(',
-        '    React.PropTypes.shape({',
+        '  a: PropTypes.arrayOf(',
+        '    PropTypes.shape({',
         '    })',
         '  )',
         '};'
       ].join('\n'),
-      parserOptions: parserOptions,
       errors: [
         {message: '\'a[].c\' is missing in props validation'},
         {message: '\'a[].d\' is missing in props validation'},
@@ -1617,15 +1631,14 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}',
         'Hello.propTypes = {',
-        '  a: React.PropTypes.oneOfType([',
-        '    React.PropTypes.shape({',
-        '      c: React.PropTypes.number,',
-        '      e: React.PropTypes.array',
+        '  a: PropTypes.oneOfType([',
+        '    PropTypes.shape({',
+        '      c: PropTypes.number,',
+        '      e: PropTypes.array',
         '    })',
         '  ])',
         '};'
       ].join('\n'),
-      parserOptions: parserOptions,
       errors: [
         {message: '\'a.length\' is missing in props validation'},
         {message: '\'a.b\' is missing in props validation'}
@@ -1642,7 +1655,7 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}',
         'Hello.propTypes = {',
-        '  "aria-controls": React.PropTypes.string',
+        '  "aria-controls": PropTypes.string',
         '};'
       ].join('\n'),
       parser: 'babel-eslint',
@@ -1660,7 +1673,6 @@ ruleTester.run('prop-types', rule, {
         'Hello.propTypes = {',
         '};'
       ].join('\n'),
-      parserOptions: parserOptions,
       errors: [
         {message: '\'some.value\' is missing in props validation'}
       ]
@@ -1675,7 +1687,6 @@ ruleTester.run('prop-types', rule, {
         'Hello.propTypes = {',
         '};'
       ].join('\n'),
-      parserOptions: parserOptions,
       errors: [
         {message: '\'arr\' is missing in props validation'}
       ]
@@ -1688,12 +1699,11 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}',
         'Hello.propTypes = {',
-        '  "arr": React.PropTypes.arrayOf(',
-        '    React.PropTypes.shape({})',
+        '  "arr": PropTypes.arrayOf(',
+        '    PropTypes.shape({})',
         '  )',
         '};'
       ].join('\n'),
-      parserOptions: parserOptions,
       errors: [
         {message: '\'arr[].some.value\' is missing in props validation'}
       ]
@@ -1737,7 +1747,7 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}',
         'Hello.propTypes = {',
-        '  lastname: React.PropTypes.string',
+        '  lastname: PropTypes.string',
         '}'
       ].join('\n'),
       parser: 'babel-eslint',
@@ -1901,7 +1911,7 @@ ruleTester.run('prop-types', rule, {
     }, {
       code: [
         'function HelloComponent() {',
-        '  var Hello = React.createClass({',
+        '  var Hello = createReactClass({',
         '    render: function() {',
         '      return <div>Hello {this.props.name}</div>;',
         '    }',
@@ -1965,7 +1975,7 @@ ruleTester.run('prop-types', rule, {
     }, {
       code: [
         'for (var key in foo) {',
-        '  var Hello = React.createClass({',
+        '  var Hello = createReactClass({',
         '    render: function() {',
         '      return <div>Hello {this.props.name}</div>;',
         '    }',
@@ -1979,7 +1989,7 @@ ruleTester.run('prop-types', rule, {
     }, {
       code: [
         'var propTypes = {',
-        '  firstname: React.PropTypes.string',
+        '  firstname: PropTypes.string',
         '};',
         'class Test extends React.Component {',
         '  render() {',
@@ -2004,7 +2014,7 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}',
         'Test.propTypes = {',
-        '  firstname: React.PropTypes.string',
+        '  firstname: PropTypes.string',
         '};'
       ].join('\n'),
       parser: 'babel-eslint',
@@ -2023,7 +2033,7 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}',
         'Test.propTypes = {',
-        '  firstname: React.PropTypes.string',
+        '  firstname: PropTypes.string',
         '};'
       ].join('\n'),
       parser: 'babel-eslint',
@@ -2190,7 +2200,6 @@ ruleTester.run('prop-types', rule, {
         '}',
         'Greetings.propTypes = {};'
       ].join('\n'),
-      parserOptions: parserOptions,
       errors: [{
         message: '\'name\' is missing in props validation'
       }]
@@ -2205,7 +2214,6 @@ ruleTester.run('prop-types', rule, {
         '}',
         'Greetings.Hello.propTypes = {};'
       ].join('\n'),
-      parserOptions: parserOptions,
       errors: [{
         message: '\'name\' is missing in props validation'
       }]
@@ -2219,7 +2227,6 @@ ruleTester.run('prop-types', rule, {
         '}',
         'Greetings.Hello.propTypes = {};'
       ].join('\n'),
-      parserOptions: parserOptions,
       errors: [{
         message: '\'name\' is missing in props validation'
       }]
@@ -2230,7 +2237,6 @@ ruleTester.run('prop-types', rule, {
         '  return <Hello>{names}</Hello>;',
         '}'
       ].join('\n'),
-      parserOptions: parserOptions,
       errors: [{
         message: '\'names\' is missing in props validation'
       }]
@@ -2240,7 +2246,6 @@ ruleTester.run('prop-types', rule, {
         '  <div onClick={() => props.toggle()}></div>',
         ')'
       ].join('\n'),
-      parserOptions: parserOptions,
       errors: [{
         message: '\'toggle\' is missing in props validation'
       }]
@@ -2248,7 +2253,6 @@ ruleTester.run('prop-types', rule, {
       code: [
         'const MyComponent = props => props.test ? <div /> : <span />'
       ].join('\n'),
-      parserOptions: parserOptions,
       errors: [{
         message: '\'test\' is missing in props validation'
       }]
@@ -2260,7 +2264,6 @@ ruleTester.run('prop-types', rule, {
         '  otherProp: props.otherProp,',
         '})'
       ].join('\n'),
-      parserOptions: parserOptions,
       errors: [{
         message: '\'test\' is missing in props validation'
       }]
@@ -2318,7 +2321,6 @@ ruleTester.run('prop-types', rule, {
         '  return <div className={f()}>{bar}</div>;',
         '}'
       ].join('\n'),
-      parserOptions: parserOptions,
       errors: [
         {message: '\'bar\' is missing in props validation'}
       ]
@@ -2330,7 +2332,6 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}'
       ].join('\n'),
-      parserOptions: parserOptions,
       errors: [{
         message: '\'name\' is missing in props validation',
         line: 3,
@@ -2345,7 +2346,6 @@ ruleTester.run('prop-types', rule, {
         '  }',
         '}'
       ].join('\n'),
-      parserOptions: parserOptions,
       errors: [{
         message: '\'name\' is missing in props validation',
         line: 3,
@@ -2370,7 +2370,7 @@ ruleTester.run('prop-types', rule, {
       }]
     }, {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  propTypes: {},',
         '  render: function() {',
         '    return <div>{this.props.firstname}</div>;',
@@ -2378,7 +2378,6 @@ ruleTester.run('prop-types', rule, {
         '});'
       ].join('\n'),
       options: [{skipUndeclared: true}],
-      parserOptions: parserOptions,
       errors: [{
         message: '\'firstname\' is missing in props validation',
         line: 4,
@@ -2392,7 +2391,6 @@ ruleTester.run('prop-types', rule, {
         'Hello.propTypes = {}'
       ].join('\n'),
       options: [{skipUndeclared: true}],
-      parserOptions: parserOptions,
       errors: [{
         message: '\'firstname\' is missing in props validation',
         line: 2,
@@ -2410,7 +2408,6 @@ ruleTester.run('prop-types', rule, {
         '}'
       ].join('\n'),
       options: [{skipUndeclared: true}],
-      parserOptions: parserOptions,
       errors: [{
         message: '\'firstname\' is missing in props validation',
         line: 6,
@@ -2426,7 +2423,6 @@ ruleTester.run('prop-types', rule, {
         'Hello.propTypes = {};'
       ].join('\n'),
       options: [{skipUndeclared: true}],
-      parserOptions: parserOptions,
       errors: [{
         message: '\'firstname\' is missing in props validation',
         line: 3,
@@ -2434,19 +2430,136 @@ ruleTester.run('prop-types', rule, {
       }]
     }, {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  render: function() {',
         '    return <div>{this.props.firstname}</div>;',
         '  }',
         '});'
       ].join('\n'),
       options: [{skipUndeclared: false}],
-      parserOptions: parserOptions,
       errors: [{
         message: '\'firstname\' is missing in props validation',
         line: 3,
         column: 29
       }]
+    }, {
+      code: [
+        'type MyComponentProps = {',
+        '  +a: number,',
+        '};',
+        'function MyComponent({ a, b }: MyComponentProps) {',
+        '  return <div />;',
+        '}'
+      ].join('\n'),
+      parser: 'babel-eslint',
+      errors: [{
+        message: '\'b\' is missing in props validation',
+        line: 4,
+        column: 27,
+        type: 'Property'
+      }]
+    }, {
+      code: [
+        'type MyComponentProps = {',
+        '  -a: number,',
+        '};',
+        'function MyComponent({ a, b }: MyComponentProps) {',
+        '  return <div />;',
+        '}'
+      ].join('\n'),
+      parser: 'babel-eslint',
+      errors: [{
+        message: '\'b\' is missing in props validation',
+        line: 4,
+        column: 27,
+        type: 'Property'
+      }]
+    }, {
+      code: [
+        'type Props = {+name: Object;};',
+        'class Hello extends React.Component {',
+        '  props: Props;',
+        '  render () {',
+        '    return <div>Hello {this.props.firstname}</div>;',
+        '  }',
+        '}'
+      ].join('\n'),
+      parser: 'babel-eslint',
+      errors: [
+        {message: '\'firstname\' is missing in props validation'}
+      ]
+    }, {
+      code: [
+        'class Hello extends React.Component {',
+        '  onSelect = async ({ name }) => {',
+        '    return this.props.foo;',
+        '  }',
+        '  render() {',
+        '    return <Greeting onSelect={this.onSelect} />;',
+        '  }',
+        '}'
+      ].join('\n'),
+      parser: 'babel-eslint',
+      errors: [
+        {message: '\'foo\' is missing in props validation'}
+      ]
+    }, {
+      code: [
+        'class Hello extends Component {',
+        '  static propTypes = {',
+        '    bar: PropTypes.func',
+        '  }',
+        '  componentWillReceiveProps(nextProps) {',
+        '    if (nextProps.foo) {',
+        '      return;',
+        '    }',
+        '  }',
+        '  render() {',
+        '    return <div bar={this.props.bar} />;',
+        '  }',
+        '}'
+      ].join('\n'),
+      parser: 'babel-eslint',
+      errors: [
+        {message: '\'foo\' is missing in props validation'}
+      ]
+    }, {
+      code: [
+        'class Hello extends Component {',
+        '  static propTypes = {',
+        '    bar: PropTypes.func',
+        '  }',
+        '  componentWillReceiveProps(nextProps) {',
+        '    const {foo} = nextProps;',
+        '    if (foo) {',
+        '      return;',
+        '    }',
+        '  }',
+        '  render() {',
+        '    return <div bar={this.props.bar} />;',
+        '  }',
+        '}'
+      ].join('\n'),
+      parser: 'babel-eslint',
+      errors: [
+        {message: '\'foo\' is missing in props validation'}
+      ]
+    }, {
+      code: [
+        'class Hello extends React.Component {',
+        '  static propTypes() {',
+        '    return {',
+        '      name: PropTypes.string',
+        '    };',
+        '  }',
+        '  render() {',
+        '    return <div>Hello {this.props.name}</div>;',
+        '  }',
+        '}'
+      ].join('\n'),
+      errors: [
+        {message: '\'name\' is missing in props validation'}
+      ]
     }
   ]
 });

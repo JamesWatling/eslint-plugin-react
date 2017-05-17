@@ -1,4 +1,4 @@
-# Enforce boolean attributes notation in JSX (jsx-boolean-value)
+# Enforce boolean attributes notation in JSX (react/jsx-boolean-value)
 
 [When using a boolean attribute in JSX](https://facebook.github.io/react/docs/jsx-in-depth.html#boolean-attributes), you can set the attribute value to `true` or omit the value. This rule will enforce one or the other to keep consistency in your code.
 
@@ -10,25 +10,25 @@ This rule takes one argument. If it is `"always"` then it warns whenever an attr
 
 The following patterns are considered warnings when configured `"never"`:
 
-```js
+```jsx
 var Hello = <Hello personal={true} />;
 ```
 
 The following patterns are not considered warnings when configured `"never"`:
 
-```js
+```jsx
 var Hello = <Hello personal />;
 ```
 
 The following patterns are considered warnings when configured `"always"`:
 
-```js
+```jsx
 var Hello = <Hello personal />;
 ```
 
 The following patterns are not considered warnings when configured `"always"`:
 
-```js
+```jsx
 var Hello = <Hello personal={true} />;
 ```
 

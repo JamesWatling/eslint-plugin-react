@@ -1,4 +1,4 @@
-# Prevent usage of findDOMNode (no-find-dom-node)
+# Prevent usage of findDOMNode (react/no-find-dom-node)
 
 Facebook will eventually deprecate `findDOMNode` as it blocks certain improvements in React in the future.
 
@@ -8,7 +8,7 @@ It is recommended to use callback refs instead. See [Dan Abramov comments and ex
 
 The following patterns are considered warnings:
 
-```js
+```jsx
 class MyComponent extends Component {
   componentDidMount() {
     findDOMNode(this).scrollIntoView();
@@ -21,7 +21,7 @@ class MyComponent extends Component {
 
 The following patterns are not considered warnings:
 
-```js
+```jsx
 class MyComponent extends Component {
   componentDidMount() {
     this.node.scrollIntoView();

@@ -1,4 +1,4 @@
-# Prevent missing displayName in a React component definition (display-name)
+# Prevent missing displayName in a React component definition (react/display-name)
 
 DisplayName allows you to name your component. This name is used by React in debugging messages.
 
@@ -6,8 +6,8 @@ DisplayName allows you to name your component. This name is used by React in deb
 
 The following patterns are considered warnings:
 
-```js
-var Hello = React.createClass({
+```jsx
+var Hello = createReactClass({
   render: function() {
     return <div>Hello {this.props.name}</div>;
   }
@@ -16,8 +16,8 @@ var Hello = React.createClass({
 
 The following patterns are not considered warnings:
 
-```js
-var Hello = React.createClass({
+```jsx
+var Hello = createReactClass({
   displayName: 'Hello',
   render: function() {
     return <div>Hello {this.props.name}</div>;
@@ -29,7 +29,7 @@ var Hello = React.createClass({
 
 ```js
 ...
-"display-name": [<enabled>, { "ignoreTranspilerName": <boolean> }]
+"react/display-name": [<enabled>, { "ignoreTranspilerName": <boolean> }]
 ...
 ```
 
@@ -39,8 +39,8 @@ When `true` the rule will ignore the name set by the transpiler and require a `d
 
 The following patterns are considered okay and do not cause warnings:
 
-```js
-var Hello = React.createClass({
+```jsx
+var Hello = createReactClass({
   displayName: 'Hello',
 
   render: function() {
@@ -50,7 +50,7 @@ var Hello = React.createClass({
 module.exports = Hello;
 ```
 
-```js
+```jsx
 export default class Hello extends React.Component {
   render() {
     return <div>Hello {this.props.name}</div>;
@@ -59,7 +59,7 @@ export default class Hello extends React.Component {
 Hello.displayName = 'Hello';
 ```
 
-```js
+```jsx
 export default function Hello({ name }) {
   return <div>Hello {name}</div>;
 }
@@ -68,8 +68,8 @@ Hello.displayName = 'Hello';
 
 The following patterns will cause warnings:
 
-```js
-var Hello = React.createClass({
+```jsx
+var Hello = createReactClass({
   render: function() {
     return <div>Hello {this.props.name}</div>;
   }
@@ -77,7 +77,7 @@ var Hello = React.createClass({
 module.exports = Hello;
 ```
 
-```js
+```jsx
 export default class Hello extends React.Component {
   render() {
     return <div>Hello {this.props.name}</div>;
@@ -85,15 +85,15 @@ export default class Hello extends React.Component {
 }
 ```
 
-```js
-module.exports = React.createClass({
+```jsx
+module.exports = createReactClass({
   render: function() {
     return <div>Hello {this.props.name}</div>;
   }
 });
 ```
 
-```js
+```jsx
 export default class extends React.Component {
   render() {
     return <div>Hello {this.props.name}</div>;
@@ -101,9 +101,9 @@ export default class extends React.Component {
 }
 ```
 
-```js
+```jsx
 function HelloComponent() {
-  return React.createClass({
+  return createReactClass({
     render: function() {
       return <div>Hello {this.props.name}</div>;
     }
@@ -118,6 +118,6 @@ For this rule to work we need to detect React components, this could be very har
 
 For now we should detect components created with:
 
-* `React.createClass()`
+* `createReactClass()`
 * an ES6 class that inherit from `React.Component` or `Component`
 * a stateless function that return JSX or the result of a `React.createElement` call.

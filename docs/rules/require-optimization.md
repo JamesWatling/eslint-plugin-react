@@ -1,4 +1,4 @@
-# Enforce React components to have a shouldComponentUpdate method (require-optimization)
+# Enforce React components to have a shouldComponentUpdate method (react/require-optimization)
 
 This rule prevents you from creating React components without declaring a `shouldComponentUpdate` method.
 
@@ -13,7 +13,7 @@ class YourComponent extends React.Component {
 ```
 
 ```js
-React.createClass({
+createReactClass({
 });
 ```
 
@@ -28,7 +28,7 @@ class YourComponent extends React.Component {
 ```
 
 ```js
-React.createClass({
+createReactClass({
 	shouldComponentUpdate: function () {
 		return false;
 	}
@@ -36,14 +36,14 @@ React.createClass({
 ```
 
 ```js
-React.createClass({
+createReactClass({
 	mixins: [PureRenderMixin]
 });
 ```
 
 ```js
 @reactMixin.decorate(PureRenderMixin)
-React.createClass({
+createReactClass({
 
 });
 ```
@@ -52,7 +52,7 @@ React.createClass({
 
 ```js
 ...
-"require-optimization": [<enabled>, { allowDecorators: [<allowDecorator>] }]
+"react/require-optimization": [<enabled>, { allowDecorators: [<allowDecorator>] }]
 ...
 ```
 
@@ -76,6 +76,6 @@ class Hello extends React.Component {}
 
 ```js
 ...
-"require-optimization": [2, {allowDecorators: ['customDecorators']}]
+"react/require-optimization": [2, {allowDecorators: ['customDecorators']}]
 ...
 ```

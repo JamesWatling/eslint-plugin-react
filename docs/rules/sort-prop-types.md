@@ -1,4 +1,4 @@
-# Enforce propTypes declarations alphabetical sorting (sort-prop-types)
+# Enforce propTypes declarations alphabetical sorting (react/sort-prop-types)
 
 Some developers prefer to sort propTypes declarations alphabetically to be able to find necessary declaration easier at the later time. Others feel that it adds complexity and becomes burden to maintain.
 
@@ -8,12 +8,12 @@ This rule checks all components and verifies that all propTypes declarations are
 
 The following patterns are considered warnings:
 
-```js
-var Component = React.createClass({
+```jsx
+var Component = createReactClass({
   propTypes: {
-    z: React.PropTypes.number,
-    a: React.PropTypes.any,
-    b: React.PropTypes.string
+    z: PropTypes.number,
+    a: PropTypes.any,
+    b: PropTypes.string
   },
 ...
 });
@@ -22,16 +22,16 @@ class Component extends React.Component {
   ...
 }
 Component.propTypes = {
-  z: React.PropTypes.number,
-  a: React.PropTypes.any,
-  b: React.PropTypes.string
+  z: PropTypes.number,
+  a: PropTypes.any,
+  b: PropTypes.string
 };
 
 class Component extends React.Component {
   static propTypes = {
-    z: React.PropTypes.any,
-    y: React.PropTypes.any,
-    a: React.PropTypes.any
+    z: PropTypes.any,
+    y: PropTypes.any,
+    a: PropTypes.any
   }
   render() {
     return <div />;
@@ -41,12 +41,12 @@ class Component extends React.Component {
 
 The following patterns are considered okay and do not cause warnings:
 
-```js
-var Component = React.createClass({
+```jsx
+var Component = createReactClass({
   propTypes: {
-    a: React.PropTypes.number,
-    b: React.PropTypes.any,
-    c: React.PropTypes.string
+    a: PropTypes.number,
+    b: PropTypes.any,
+    c: PropTypes.string
   },
 ...
 });
@@ -55,16 +55,16 @@ class Component extends React.Component {
   ...
 }
 Component.propTypes = {
-  a: React.PropTypes.string,
-  b: React.PropTypes.any,
-  c: React.PropTypes.string
+  a: PropTypes.string,
+  b: PropTypes.any,
+  c: PropTypes.string
 };
 
 class Component extends React.Component {
   static propTypes = {
-    a: React.PropTypes.any,
-    b: React.PropTypes.any,
-    c: React.PropTypes.any
+    a: PropTypes.any,
+    b: PropTypes.any,
+    c: PropTypes.any
   }
   render() {
     return <div />;
@@ -76,7 +76,7 @@ class Component extends React.Component {
 
 ```js
 ...
-"sort-prop-types": [<enabled>, {
+"react/sort-prop-types": [<enabled>, {
   "callbacksLast": <boolean>,
   "ignoreCase": <boolean>,
   "requiredFirst": <boolean>,
@@ -93,12 +93,12 @@ When `true` the rule ignores the case-sensitivity of the declarations order.
 When `true`, propTypes for props beginning with "on" must be listed after all other props:
 
 ```js
-var Component = React.createClass({
+var Component = createReactClass({
   propTypes: {
-    a: React.PropTypes.number,
-    z: React.PropTypes.string,
-    onBar: React.PropTypes.func,
-    onFoo: React.PropTypes.func,
+    a: PropTypes.number,
+    z: PropTypes.string,
+    onBar: PropTypes.func,
+    onFoo: PropTypes.func,
   },
 ...
 });
@@ -109,12 +109,12 @@ var Component = React.createClass({
 When `true`, prop types for required props must be listed before all other props:
 
 ```js
-var Component = React.createClass({
+var Component = createReactClass({
   propTypes: {
-    barRequired: React.PropTypes.any.isRequired,
-    fooRequired: React.PropTypes.any.isRequired,
-    a: React.PropTypes.number,
-    z: React.PropTypes.string,
+    barRequired: PropTypes.any.isRequired,
+    fooRequired: PropTypes.any.isRequired,
+    a: PropTypes.number,
+    z: PropTypes.string,
   },
 ...
 });

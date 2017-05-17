@@ -12,8 +12,10 @@ var rule = require('../../../lib/rules/no-did-update-set-state');
 var RuleTester = require('eslint').RuleTester;
 
 var parserOptions = {
-  ecmaVersion: 6,
+  ecmaVersion: 8,
+  sourceType: 'module',
   ecmaFeatures: {
+    experimentalObjectRestSpread: true,
     jsx: true
   }
 };
@@ -24,38 +26,35 @@ require('babel-eslint');
 // Tests
 // ------------------------------------------------------------------------------
 
-var ruleTester = new RuleTester();
+var ruleTester = new RuleTester({parserOptions});
 ruleTester.run('no-did-update-set-state', rule, {
 
   valid: [{
     code: [
-      'var Hello = React.createClass({',
+      'var Hello = createReactClass({',
       '  render: function() {',
       '    return <div>Hello {this.props.name}</div>;',
       '  }',
       '});'
-    ].join('\n'),
-    parserOptions: parserOptions
+    ].join('\n')
   }, {
     code: [
-      'var Hello = React.createClass({',
+      'var Hello = createReactClass({',
       '  componentDidUpdate: function() {}',
       '});'
-    ].join('\n'),
-    parserOptions: parserOptions
+    ].join('\n')
   }, {
     code: [
-      'var Hello = React.createClass({',
+      'var Hello = createReactClass({',
       '  componentDidUpdate: function() {',
       '    someNonMemberFunction(arg);',
       '    this.someHandler = this.setState;',
       '  }',
       '});'
-    ].join('\n'),
-    parserOptions: parserOptions
+    ].join('\n')
   }, {
     code: [
-      'var Hello = React.createClass({',
+      'var Hello = createReactClass({',
       '  componentDidUpdate: function() {',
       '    someClass.onSomeEvent(function(data) {',
       '      this.setState({',
@@ -64,11 +63,10 @@ ruleTester.run('no-did-update-set-state', rule, {
       '    })',
       '  }',
       '});'
-    ].join('\n'),
-    parserOptions: parserOptions
+    ].join('\n')
   }, {
     code: [
-      'var Hello = React.createClass({',
+      'var Hello = createReactClass({',
       '  componentDidUpdate: function() {',
       '    function handleEvent(data) {',
       '      this.setState({',
@@ -79,13 +77,12 @@ ruleTester.run('no-did-update-set-state', rule, {
       '  }',
       '});'
     ].join('\n'),
-    parser: 'babel-eslint',
-    parserOptions: parserOptions
+    parser: 'babel-eslint'
   }],
 
   invalid: [{
     code: [
-      'var Hello = React.createClass({',
+      'var Hello = createReactClass({',
       '  componentDidUpdate: function() {',
       '    this.setState({',
       '      data: data',
@@ -93,7 +90,6 @@ ruleTester.run('no-did-update-set-state', rule, {
       '  }',
       '});'
     ].join('\n'),
-    parserOptions: parserOptions,
     errors: [{
       message: 'Do not use setState in componentDidUpdate'
     }]
@@ -113,7 +109,7 @@ ruleTester.run('no-did-update-set-state', rule, {
     }]
   }, {
     code: [
-      'var Hello = React.createClass({',
+      'var Hello = createReactClass({',
       '  componentDidUpdate: function() {',
       '    this.setState({',
       '      data: data',
@@ -122,7 +118,6 @@ ruleTester.run('no-did-update-set-state', rule, {
       '});'
     ].join('\n'),
     options: ['disallow-in-func'],
-    parserOptions: parserOptions,
     errors: [{
       message: 'Do not use setState in componentDidUpdate'
     }]
@@ -143,7 +138,7 @@ ruleTester.run('no-did-update-set-state', rule, {
     }]
   }, {
     code: [
-      'var Hello = React.createClass({',
+      'var Hello = createReactClass({',
       '  componentDidUpdate: function() {',
       '    someClass.onSomeEvent(function(data) {',
       '      this.setState({',
@@ -153,7 +148,6 @@ ruleTester.run('no-did-update-set-state', rule, {
       '  }',
       '});'
     ].join('\n'),
-    parserOptions: parserOptions,
     options: ['disallow-in-func'],
     errors: [{
       message: 'Do not use setState in componentDidUpdate'
@@ -177,7 +171,7 @@ ruleTester.run('no-did-update-set-state', rule, {
     }]
   }, {
     code: [
-      'var Hello = React.createClass({',
+      'var Hello = createReactClass({',
       '  componentDidUpdate: function() {',
       '    if (true) {',
       '      this.setState({',
@@ -187,7 +181,6 @@ ruleTester.run('no-did-update-set-state', rule, {
       '  }',
       '});'
     ].join('\n'),
-    parserOptions: parserOptions,
     errors: [{
       message: 'Do not use setState in componentDidUpdate'
     }]
@@ -209,14 +202,13 @@ ruleTester.run('no-did-update-set-state', rule, {
     }]
   }, {
     code: [
-      'var Hello = React.createClass({',
+      'var Hello = createReactClass({',
       '  componentDidUpdate: function() {',
       '    someClass.onSomeEvent((data) => this.setState({data: data}));',
       '  }',
       '});'
     ].join('\n'),
     parser: 'babel-eslint',
-    parserOptions: parserOptions,
     options: ['disallow-in-func'],
     errors: [{
       message: 'Do not use setState in componentDidUpdate'

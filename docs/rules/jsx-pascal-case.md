@@ -1,4 +1,4 @@
-# Enforce PascalCase for user-defined JSX components (jsx-pascal-case)
+# Enforce PascalCase for user-defined JSX components (react/jsx-pascal-case)
 
 Enforces coding style that user-defined JSX components are defined and referenced in PascalCase.
 
@@ -8,31 +8,31 @@ Note that since React's JSX uses the upper vs. lower case convention to distingu
 
 The following patterns are considered warnings:
 
-```js
+```jsx
 <Test_component />
 ```
 
-```js
+```jsx
 <TEST_COMPONENT />
 ```
 
 The following patterns are not considered warnings:
 
-```js
+```jsx
 <div />
 ```
 
-```js
+```jsx
 <TestComponent />
 ```
 
-```js
+```jsx
 <TestComponent>
   <div />
 </TestComponent>
 ```
 
-```js
+```jsx
 <CSSTransitionGroup />
 ```
 
@@ -40,7 +40,7 @@ The following patterns are not considered warnings:
 
 ```js
 ...
-"jsx-pascal-case": [<enabled>, { allowAllCaps: <allowAllCaps>, ignore: <ignore> }]
+"react/jsx-pascal-case": [<enabled>, { allowAllCaps: <allowAllCaps>, ignore: <ignore> }]
 ...
 ```
 

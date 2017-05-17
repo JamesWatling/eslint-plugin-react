@@ -1,4 +1,4 @@
-# Prevent duplicate properties in JSX (jsx-no-duplicate-props)
+# Prevent duplicate properties in JSX (react/jsx-no-duplicate-props)
 
 Creating JSX elements with duplicate props can cause unexpected behavior in your application.
 
@@ -6,13 +6,13 @@ Creating JSX elements with duplicate props can cause unexpected behavior in your
 
 The following patterns are considered warnings:
 
-```js
+```jsx
 <Hello name="John" name="John" />;
 ```
 
 The following patterns are not considered warnings:
 
-```js
+```jsx
 <Hello firstname="John" lastname="Doe" />;
 ```
 
@@ -20,7 +20,7 @@ The following patterns are not considered warnings:
 
 ```js
 ...
-"jsx-no-duplicate-props": [<enabled>, { "ignoreCase": <boolean> }]
+"react/jsx-no-duplicate-props": [<enabled>, { "ignoreCase": <boolean> }]
 ...
 ```
 

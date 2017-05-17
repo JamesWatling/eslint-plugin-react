@@ -3,6 +3,201 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 This change log adheres to standards from [Keep a CHANGELOG](http://keepachangelog.com).
 
+## [7.0.1] - 2017-05-13
+### Fixed
+* Fix [`jsx-curly-spacing`][] `allowMultiline` option being undefined in some cases ([#1179][] @fatfisz)
+* Fix [`jsx-curly-spacing`][] newline with object literals bug ([#1180][] @fatfisz)
+* Fix [`prop-types`][] to not mark class static function as valid propTypes definition ([#1174][])
+* Fix [`prop-types`][] crash with Flow spread operator ([#1178][])
+* Fix [`void-dom-elements-no-children`][] crash on faulty `createElement` detection ([#1101][])
+* Fix [`require-default-props`][] error message for quoted props ([#1161][])
+
+### Changed
+* Update dependencies
+* Documentation improvements ([#1173][] @luftywiranda13, [#1192][] @markus-willems)
+
+[7.0.1]: https://github.com/yannickcr/eslint-plugin-react/compare/v7.0.0...v7.0.1
+[#1179]: https://github.com/yannickcr/eslint-plugin-react/pull/1179
+[#1180]: https://github.com/yannickcr/eslint-plugin-react/pull/1180
+[#1174]: https://github.com/yannickcr/eslint-plugin-react/issues/1174
+[#1178]: https://github.com/yannickcr/eslint-plugin-react/issues/1178
+[#1101]: https://github.com/yannickcr/eslint-plugin-react/issues/1101
+[#1161]: https://github.com/yannickcr/eslint-plugin-react/issues/1161
+[#1173]: https://github.com/yannickcr/eslint-plugin-react/pull/1173
+[#1192]: https://github.com/yannickcr/eslint-plugin-react/pull/1192
+
+## [7.0.0] - 2017-05-06
+### Added
+* Add [`no-will-update-set-state`][] rule ([#1139][] @ManThursday)
+* Add import and destructuring support to [`no-deprecated`][]
+* Add `reservedFirst` option to [`jsx-sort-props`][] ([#1134][] @MatthewHerbst)
+
+### Breaking
+* Update rules for React 15.5.0:
+  * Add warnings for `React.PropTypes` and `React.createClass` in [`no-deprecated`][] ([#1148][] @Calyhre)
+  * Update `createClass` component factory to `createReactClass`. This is used for React component detection, if you still using `React.createClass` use the [shared settings](README.md#configuration) to specify `createClass` as component factory
+* Drop Node.js < 4 support ([#1038][] @ljharb)
+* Add [`no-danger-with-children`][] rule to recommended rules ([#748][] @ljharb)
+* Add [`no-string-refs`][] rule to recommended rules ([#749][] @ljharb)
+* Add [`jsx-key`][] rule to recommended rules ([#750][] @ljharb)
+* Add [`jsx-no-comment-textnodes`][] rule to recommended rules ([#751][] @ljharb)
+* Add [`jsx-no-target-blank`][] rule to recommended rules ([#752][] @ljharb)
+* Add [`no-unescaped-entities`][] rule to recommended rules ([#841][] @ljharb)
+* Add [`no-children-prop`][] rule to recommended rules ([#842][] @ljharb)
+* Remove deprecated [`wrap-multilines`][] rule, use [`jsx-wrap-multilines`][] instead
+* Remove deprecated [`no-comment-textnodes`][] rule, use [`jsx-no-comment-textnodes`][] instead
+* Remove deprecated [`require-extension`][] rule, use the [eslint-plugin-import](https://github.com/benmosher/eslint-plugin-import) [`extensions`](https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/extensions.md) rule instead
+* Deprecate [`jsx-space-before-closing`][] rule, use the [`jsx-tag-spacing`][] rule instead. [`jsx-space-before-closing`][] still works but will trigger a warning ([#1070][] @afairb)
+* [`jsx-first-prop-new-line`][] default is now `multiline-multiprop` ([#802][] @kokarn)
+* [`jsx-wrap-multilines`][] now checks arrow functions without block body. It can be deactivated in [rule options](docs/rules/jsx-wrap-multilines.md#rule-details) ([#790][] @ColCh)
+* [`jsx-no-undef`][] will not check the global scope by default. You can force it with the [`allowGlobals`](docs/rules/jsx-no-undef.md#allowglobals) option ([#1013][] @jomasti)
+
+### Fixed
+* Fix [`no-unused-prop-types`][] false positive with `nextProps` ([#1079][] @Kerumen)
+* Fix [`prefer-stateless-function`][] to not warn on classes with decorators ([#1034][] @benstepp)
+
+### Changed
+* Update dependencies ([#1119][] @danez)
+* Documentation improvements ([#1121][] @omerzach, [#1130][] @dreid, [#1131][] @shoesandsocks, [#1149][] @Adzz, [#1151][] @MatthewHerbst, [#1167][] @Slumber86)
+
+[7.0.0]: https://github.com/yannickcr/eslint-plugin-react/compare/v6.10.3...v7.0.0
+[#1134]: https://github.com/yannickcr/eslint-plugin-react/pull/1134
+[#1038]: https://github.com/yannickcr/eslint-plugin-react/pull/1038
+[#802]: https://github.com/yannickcr/eslint-plugin-react/pull/802
+[#790]: https://github.com/yannickcr/eslint-plugin-react/issues/790
+[#1013]: https://github.com/yannickcr/eslint-plugin-react/pull/1013
+[#1070]: https://github.com/yannickcr/eslint-plugin-react/pull/1070
+[#748]: https://github.com/yannickcr/eslint-plugin-react/issues/748
+[#749]: https://github.com/yannickcr/eslint-plugin-react/issues/749
+[#750]: https://github.com/yannickcr/eslint-plugin-react/issues/750
+[#751]: https://github.com/yannickcr/eslint-plugin-react/issues/751
+[#752]: https://github.com/yannickcr/eslint-plugin-react/issues/752
+[#841]: https://github.com/yannickcr/eslint-plugin-react/issues/841
+[#842]: https://github.com/yannickcr/eslint-plugin-react/issues/842
+[#1139]: https://github.com/yannickcr/eslint-plugin-react/pull/1139
+[#1148]: https://github.com/yannickcr/eslint-plugin-react/pull/1148
+[#1079]: https://github.com/yannickcr/eslint-plugin-react/issues/1079
+[#1034]: https://github.com/yannickcr/eslint-plugin-react/issues/1034
+[#1119]: https://github.com/yannickcr/eslint-plugin-react/pull/1119
+[#1121]: https://github.com/yannickcr/eslint-plugin-react/pull/1121
+[#1130]: https://github.com/yannickcr/eslint-plugin-react/pull/1130
+[#1131]: https://github.com/yannickcr/eslint-plugin-react/pull/1131
+[#1149]: https://github.com/yannickcr/eslint-plugin-react/pull/1149
+[#1151]: https://github.com/yannickcr/eslint-plugin-react/pull/1151
+[#1167]: https://github.com/yannickcr/eslint-plugin-react/pull/1167
+
+## [6.10.3] - 2017-03-20
+### Fixed
+* Revert [#1057][] due to issues with [`jsx-indent`][] ([#1117][])
+
+[6.10.3]: https://github.com/yannickcr/eslint-plugin-react/compare/v6.10.2...v6.10.3
+
+## [6.10.2] - 2017-03-19
+### Fixed
+* Fix [`jsx-indent`][] indentation calculation with nested JSX ([#1117][])
+
+[6.10.2]: https://github.com/yannickcr/eslint-plugin-react/compare/v6.10.1...v6.10.2
+[#1117]: https://github.com/yannickcr/eslint-plugin-react/issues/1117
+
+## [6.10.1] - 2017-03-19
+### Fixed
+* Fix [`jsx-indent`][] auto fix with tabs ([#1057][] @kentcdodds @webOS101)
+* Fix [`jsx-indent`][] crash ([#1061][] @iancmyers)
+* Fix [`void-dom-elements-no-children`][] crash and fix it to only checks for a createElement call from
+React ([#1073][] @jomasti)
+* Fix component detection that caused a false positive in [`no-multi-comp`][] ([#1088][] @benstepp)
+
+[6.10.1]: https://github.com/yannickcr/eslint-plugin-react/compare/v6.10.0...v6.10.1
+[#1057]: https://github.com/yannickcr/eslint-plugin-react/issues/1057
+[#1061]: https://github.com/yannickcr/eslint-plugin-react/issues/1061
+[#1073]: https://github.com/yannickcr/eslint-plugin-react/issues/1073
+[#1088]: https://github.com/yannickcr/eslint-plugin-react/issues/1088
+
+## [6.10.0] - 2017-02-16
+### Added
+* Add [`forbid-foreign-prop-types`][] rule ([#696][] @iancmyers)
+* Add [`void-dom-elements-no-children`][] rule ([#709][] @lencioni)
+* Add [`forbid-elements`][] rule ([#887][] @kentor)
+* Add `noSortAlphabetically` option to [`jsx-sort-props`][] ([#541][] [#786][] @markus101)
+* Add `when` option to [`jsx-max-props-per-line`][] ([#878][] @kentor)
+* Add support for `nextProps` to [`prop-types`][] ([#814][])
+
+### Fixed
+* Fix [`require-default-props`][] crash ([#1029][])
+* Fix [`require-default-props`][] rule when using Flow type from assignment ([#1043][] @wyze @CarlRosell)
+* Fix [`style-prop-object`][] to not warn with explicit `null` or `undefined` ([#812][] @ljharb)
+* Fix [`no-unused-prop-types`][] props detection in stateless components ([#885][] @BarryThePenguin)
+* Fix [`display-name`] false positive with `document.createElement` ([#996][] @jomasti)
+* Fix ESLint 2 compatibility (@ljharb)
+
+### Changed
+* Tests improvements (@ljharb)
+* Documentation improvements ([#958][] @Jorundur, [#1010][] @amilajack, [#1041][] @EvNaverniouk, [#1050][] @lencioni, [#1062][] @dguo)
+
+[6.10.0]: https://github.com/yannickcr/eslint-plugin-react/compare/v6.9.0...v6.10.0
+[#696]: https://github.com/yannickcr/eslint-plugin-react/issues/696
+[#709]: https://github.com/yannickcr/eslint-plugin-react/issues/709
+[#887]: https://github.com/yannickcr/eslint-plugin-react/issues/887
+[#541]: https://github.com/yannickcr/eslint-plugin-react/issues/541
+[#786]: https://github.com/yannickcr/eslint-plugin-react/issues/786
+[#878]: https://github.com/yannickcr/eslint-plugin-react/issues/878
+[#814]: https://github.com/yannickcr/eslint-plugin-react/issues/814
+[#1029]: https://github.com/yannickcr/eslint-plugin-react/issues/1029
+[#1043]: https://github.com/yannickcr/eslint-plugin-react/issues/1043
+[#812]: https://github.com/yannickcr/eslint-plugin-react/issues/812
+[#885]: https://github.com/yannickcr/eslint-plugin-react/issues/885
+[#996]: https://github.com/yannickcr/eslint-plugin-react/issues/996
+[#958]: https://github.com/yannickcr/eslint-plugin-react/pull/958
+[#1010]: https://github.com/yannickcr/eslint-plugin-react/pull/1010
+[#1041]: https://github.com/yannickcr/eslint-plugin-react/pull/1041
+[#1050]: https://github.com/yannickcr/eslint-plugin-react/pull/1050
+[#1062]: https://github.com/yannickcr/eslint-plugin-react/pull/1062
+
+## [6.9.0] - 2017-01-08
+### Added
+* Add support for variable reference to [`sort-prop-types`][] ([#622][])
+
+### Fixed
+* Fix Node.js 0.10 support ([#1000][] @ljharb)
+* Fix [`prop-types`][] to correctly assign props to components ([#991][])
+
+### Changed
+* Documentation improvements ([#995][] @rutsky)
+
+[6.9.0]: https://github.com/yannickcr/eslint-plugin-react/compare/v6.8.0...v6.9.0
+[#622]: https://github.com/yannickcr/eslint-plugin-react/issues/622
+[#1000]: https://github.com/yannickcr/eslint-plugin-react/pull/1000
+[#991]: https://github.com/yannickcr/eslint-plugin-react/issues/991
+[#995]: https://github.com/yannickcr/eslint-plugin-react/pull/995
+
+## [6.8.0] - 2016-12-05
+### Added
+* Add [`no-array-index-key`][] rule ([#978][] @lencioni)
+* Add [`require-default-props`][] rule ([#528][]  @vitorbal)
+* Add support for flow variance syntax to [`prop-types`][] ([#961][] @ajhyndman)
+
+### Fixed
+* Fix [`jsx-indent`][] with multiline jsx in ternaries ([#966][])
+* Fix component detection to ignore async functions ([#989][] @taion)
+* Fix [`jsx-curly-spacing`][] autofix to not delete comments ([#648][])
+* Fix auto-enabling of `eslint-plugin-react` in exported configurations ([#984][] @jamischarles)
+
+### Changed
+* Update dependencies
+* Documentation improvements ([#960][] @evilebottnawi, [#973][] @JamesWatling, [#982][] @captbaritone)
+
+[6.8.0]: https://github.com/yannickcr/eslint-plugin-react/compare/v6.7.1...v6.8.0
+[#978]: https://github.com/yannickcr/eslint-plugin-react/pull/978
+[#528]: https://github.com/yannickcr/eslint-plugin-react/issues/528
+[#961]: https://github.com/yannickcr/eslint-plugin-react/issues/961
+[#966]: https://github.com/yannickcr/eslint-plugin-react/issues/966
+[#989]: https://github.com/yannickcr/eslint-plugin-react/pull/989
+[#648]: https://github.com/yannickcr/eslint-plugin-react/issues/648
+[#984]: https://github.com/yannickcr/eslint-plugin-react/pull/984
+[#960]: https://github.com/yannickcr/eslint-plugin-react/pull/960
+[#973]: https://github.com/yannickcr/eslint-plugin-react/pull/973
+[#982]: https://github.com/yannickcr/eslint-plugin-react/pull/982
+
 ## [6.7.1] - 2016-11-15
 ### Fixed
 * Fix [`jsx-tag-spacing`][] crash when options object isn't passed ([#955][] @daltones)
@@ -1494,7 +1689,10 @@ If you're still not using React 15 you can keep the old behavior by setting the 
 
 [`display-name`]: docs/rules/display-name.md
 [`forbid-component-props`]: docs/rules/forbid-component-props.md
+[`forbid-elements`]: docs/rules/forbid-elements.md
+[`forbid-foreign-prop-types`]: docs/rules/forbid-foreign-prop-types.md
 [`forbid-prop-types`]: docs/rules/forbid-prop-types.md
+[`no-array-index-key`]: docs/rules/no-array-index-key.md
 [`no-children-prop`]: docs/rules/no-children-prop.md
 [`no-danger`]: docs/rules/no-danger.md
 [`no-danger-with-children`]: docs/rules/no-danger-with-children.md
@@ -1511,6 +1709,7 @@ If you're still not using React 15 you can keep the old behavior by setting the 
 [`no-unescaped-entities`]: docs/rules/no-unescaped-entities.md
 [`no-unknown-property`]: docs/rules/no-unknown-property.md
 [`no-unused-prop-types`]: docs/rules/no-unused-prop-types.md
+[`no-will-update-set-state`]: docs/rules/no-will-update-set-state.md
 [`prefer-es6-class`]: docs/rules/prefer-es6-class.md
 [`prefer-stateless-function`]: docs/rules/prefer-stateless-function.md
 [`prop-types`]: docs/rules/prop-types.md
@@ -1539,12 +1738,14 @@ If you're still not using React 15 you can keep the old behavior by setting the 
 [`jsx-no-target-blank`]: docs/rules/jsx-no-target-blank.md
 [`jsx-no-undef`]: docs/rules/jsx-no-undef.md
 [`jsx-pascal-case`]: docs/rules/jsx-pascal-case.md
+[`require-default-props`]: docs/rules/require-default-props.md
 [`jsx-sort-props`]: docs/rules/jsx-sort-props.md
 [`jsx-space-before-closing`]: docs/rules/jsx-space-before-closing.md
 [`jsx-tag-spacing`]: docs/rules/jsx-tag-spacing.md
 [`jsx-uses-react`]: docs/rules/jsx-uses-react.md
 [`jsx-uses-vars`]: docs/rules/jsx-uses-vars.md
 [`jsx-wrap-multilines`]: docs/rules/jsx-wrap-multilines.md
+[`void-dom-elements-no-children`]: docs/rules/void-dom-elements-no-children.md
 
 [`jsx-sort-prop-types`]: docs/rules/sort-prop-types.md
 [`require-extension`]: docs/rules/require-extension.md

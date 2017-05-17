@@ -12,18 +12,26 @@
 var rule = require('../../../lib/rules/no-deprecated');
 var RuleTester = require('eslint').RuleTester;
 
+var parserOptions = {
+  ecmaVersion: 8,
+  sourceType: 'module',
+  ecmaFeatures: {
+    experimentalObjectRestSpread: true,
+    jsx: true
+  }
+};
+
 require('babel-eslint');
 
 // ------------------------------------------------------------------------------
 // Tests
 // ------------------------------------------------------------------------------
 
-var ruleTester = new RuleTester();
+var ruleTester = new RuleTester({parserOptions});
 ruleTester.run('no-deprecated', rule, {
 
   valid: [
     // Not deprecated
-    'var MyClass = React.createClass({});',
     'var element = React.createElement(\'p\', {}, null);',
     'var clone = React.cloneElement(element);',
     'ReactDOM.render(element, container);',
@@ -32,7 +40,9 @@ ruleTester.run('no-deprecated', rule, {
     'ReactDOMServer.renderToString(element);',
     'ReactDOMServer.renderToStaticMarkup(element);',
     // Deprecated in a later version
-    {code: 'React.renderComponent()', settings: {react: {version: '0.11.0'}}}
+    {code: 'React.renderComponent()', settings: {react: {version: '0.11.0'}}},
+    {code: 'React.createClass()', settings: {react: {version: '15.4.0'}}},
+    {code: 'PropTypes', settings: {react: {version: '15.4.0'}}}
   ],
 
   invalid: [{
@@ -94,6 +104,75 @@ ruleTester.run('no-deprecated', rule, {
         'use ReactDOMServer.renderToStaticMarkup instead'
       )
     }]
+  }, {
+    code: 'React.createClass({});',
+    errors: [{
+      message: 'React.createClass is deprecated since React 15.5.0, use the npm module create-react-class instead'
+    }]
+  }, {
+    code: 'Foo.createClass({});',
+    settings: {react: {pragma: 'Foo'}},
+    errors: [{
+      message: 'Foo.createClass is deprecated since React 15.5.0, use the npm module create-react-class instead'
+    }]
+  }, {
+    code: 'React.PropTypes',
+    errors: [{
+      message: 'React.PropTypes is deprecated since React 15.5.0, use the npm module prop-types instead'
+    }]
+  }, {
+    code: 'var {createClass} = require(\'react\');',
+    parser: 'babel-eslint',
+    errors: [{
+      message: 'React.createClass is deprecated since React 15.5.0, use the npm module create-react-class instead'
+    }]
+  }, {
+    code: 'var {createClass, PropTypes} = require(\'react\');',
+    parser: 'babel-eslint',
+    errors: [{
+      message: 'React.createClass is deprecated since React 15.5.0, use the npm module create-react-class instead'
+    }, {
+      message: 'React.PropTypes is deprecated since React 15.5.0, use the npm module prop-types instead'
+    }]
+  }, {
+    code: 'import {createClass} from \'react\';',
+    parser: 'babel-eslint',
+    errors: [{
+      message: 'React.createClass is deprecated since React 15.5.0, use the npm module create-react-class instead'
+    }]
+  }, {
+    code: 'import {createClass, PropTypes} from \'react\';',
+    parser: 'babel-eslint',
+    errors: [{
+      message: 'React.createClass is deprecated since React 15.5.0, use the npm module create-react-class instead'
+    }, {
+      message: 'React.PropTypes is deprecated since React 15.5.0, use the npm module prop-types instead'
+    }]
+  }, {
+    code: [
+      'import React from \'react\';',
+      'const {createClass, PropTypes} = React;'
+    ].join('\n'),
+    parser: 'babel-eslint',
+    errors: [{
+      message: 'React.createClass is deprecated since React 15.5.0, use the npm module create-react-class instead'
+    }, {
+      message: 'React.PropTypes is deprecated since React 15.5.0, use the npm module prop-types instead'
+    }]
+  }, {
+    code: 'import {printDOM} from \'react-addons-perf\';',
+    parser: 'babel-eslint',
+    errors: [{
+      message: 'ReactPerf.printDOM is deprecated since React 15.0.0, use ReactPerf.printOperations instead'
+    }]
+  }, {
+    code: [
+      'import ReactPerf from \'react-addons-perf\';',
+      'const {printDOM} = ReactPerf;'
+    ].join('\n'),
+    parser: 'babel-eslint',
+    errors: [{
+      message: 'ReactPerf.printDOM is deprecated since React 15.0.0, use ReactPerf.printOperations instead'
+    }]
   }]
-
 });

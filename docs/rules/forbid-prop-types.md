@@ -1,4 +1,4 @@
-# Forbid certain propTypes (forbid-prop-types)
+# Forbid certain propTypes (react/forbid-prop-types)
 
 By default this rule prevents vague prop types with more specific alternatives available (`any`, `array`, `object`), but any prop type can be disabled if desired. The defaults are chosen because they have obvious replacements. `any` should be replaced with, well, anything. `array` and `object` can be replaced with `arrayOf` and `shape`, respectively.
 
@@ -9,12 +9,12 @@ This rule is off by default.
 
 The following patterns are considered warnings:
 
-```js
-var Component = React.createClass({
+```jsx
+var Component = createReactClass({
   propTypes: {
-    a: React.PropTypes.any,
-    r: React.PropTypes.array,
-    o: React.PropTypes.object
+    a: PropTypes.any,
+    r: PropTypes.array,
+    o: PropTypes.object
   },
 ...
 });
@@ -23,16 +23,16 @@ class Component extends React.Component {
   ...
 }
 Component.propTypes = {
-  a: React.PropTypes.any,
-  r: React.PropTypes.array,
-  o: React.PropTypes.object
+  a: PropTypes.any,
+  r: PropTypes.array,
+  o: PropTypes.object
 };
 
 class Component extends React.Component {
   static propTypes = {
-    a: React.PropTypes.any,
-    r: React.PropTypes.array,
-    o: React.PropTypes.object
+    a: PropTypes.any,
+    r: PropTypes.array,
+    o: PropTypes.object
   }
   render() {
     return <div />;
@@ -44,13 +44,13 @@ class Component extends React.Component {
 
 ```js
 ...
-"forbid-prop-types": [<enabled>, { "forbid": [<string>] }]
+"react/forbid-prop-types": [<enabled>, { "forbid": [<string>] }]
 ...
 ```
 
 ### `forbid`
 
-An array of strings, with the names of `React.PropTypes` keys that are forbidden. The default value for this option is `['any', 'array', 'object']`.
+An array of strings, with the names of `PropTypes` keys that are forbidden. The default value for this option is `['any', 'array', 'object']`.
 
 ## When not to use
 

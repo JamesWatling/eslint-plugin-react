@@ -10,8 +10,12 @@
 
 var rule = require('../../../lib/rules/no-unescaped-entities');
 var RuleTester = require('eslint').RuleTester;
+
 var parserOptions = {
+  ecmaVersion: 8,
+  sourceType: 'module',
   ecmaFeatures: {
+    experimentalObjectRestSpread: true,
     jsx: true
   }
 };
@@ -20,76 +24,70 @@ var parserOptions = {
 // Tests
 // ------------------------------------------------------------------------------
 
-var ruleTester = new RuleTester();
+var ruleTester = new RuleTester({parserOptions});
 ruleTester.run('no-unescaped-entities', rule, {
 
   valid: [
     {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  render: function() {',
         '    return (',
         '      <div/>',
         '    );',
         '  }',
         '});'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  render: function() {',
         '    return <div>Here is some text!</div>;',
         '  }',
         '});'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  render: function() {',
         '    return <div>I&rsquo;ve escaped some entities: &gt; &lt; &amp;</div>;',
         '  }',
         '});'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  render: function() {',
         '    return <div>first line is ok',
         '    so is second',
         '    and here are some escaped entities: &gt; &lt; &amp;</div>;',
         '  }',
         '});'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }, {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  render: function() {',
         '    return <div>{">" + "<" + "&" + \'"\'}</div>;',
         '  },',
         '});'
-      ].join('\n'),
-      parserOptions: parserOptions
+      ].join('\n')
     }
   ],
 
   invalid: [
     {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  render: function() {',
         '    return <div>></div>;',
         '  }',
         '});'
       ].join('\n'),
-      parserOptions: parserOptions,
       errors: [{message: 'HTML entities must be escaped.'}]
     }, {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  render: function() {',
         '    return <div>first line is ok',
         '    so is second',
@@ -97,27 +95,24 @@ ruleTester.run('no-unescaped-entities', rule, {
         '  }',
         '});'
       ].join('\n'),
-      parserOptions: parserOptions,
       errors: [{message: 'HTML entities must be escaped.'}]
     }, {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  render: function() {',
         '    return <div>\'</div>;',
         '  }',
         '});'
       ].join('\n'),
-      parserOptions: parserOptions,
       errors: [{message: 'HTML entities must be escaped.'}]
     }, {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  render: function() {',
         '    return <div>Multiple errors: \'>></div>;',
         '  }',
         '});'
       ].join('\n'),
-      parserOptions: parserOptions,
       errors: [
         {message: 'HTML entities must be escaped.'},
         {message: 'HTML entities must be escaped.'},
@@ -125,13 +120,12 @@ ruleTester.run('no-unescaped-entities', rule, {
       ]
     }, {
       code: [
-        'var Hello = React.createClass({',
+        'var Hello = createReactClass({',
         '  render: function() {',
         '    return <div>{"Unbalanced braces"}}</div>;',
         '  }',
         '});'
       ].join('\n'),
-      parserOptions: parserOptions,
       errors: [{message: 'HTML entities must be escaped.'}]
     }
   ]

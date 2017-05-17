@@ -1,13 +1,17 @@
 'use strict';
 
+var has = require('has');
+
 var allRules = {
   'jsx-uses-react': require('./lib/rules/jsx-uses-react'),
   'no-multi-comp': require('./lib/rules/no-multi-comp'),
   'prop-types': require('./lib/rules/prop-types'),
+  'require-default-props': require('./lib/rules/require-default-props'),
   'display-name': require('./lib/rules/display-name'),
   'jsx-wrap-multilines': require('./lib/rules/jsx-wrap-multilines'),
   'self-closing-comp': require('./lib/rules/self-closing-comp'),
   'jsx-no-comment-textnodes': require('./lib/rules/jsx-no-comment-textnodes'),
+  'no-array-index-key': require('./lib/rules/no-array-index-key'),
   'no-danger': require('./lib/rules/no-danger'),
   'no-set-state': require('./lib/rules/no-set-state'),
   'no-is-mounted': require('./lib/rules/no-is-mounted'),
@@ -16,6 +20,7 @@ var allRules = {
   'no-did-update-set-state': require('./lib/rules/no-did-update-set-state'),
   'no-render-return-value': require('./lib/rules/no-render-return-value'),
   'no-unescaped-entities': require('./lib/rules/no-unescaped-entities'),
+  'no-will-update-set-state': require('./lib/rules/no-will-update-set-state'),
   'react-in-jsx-scope': require('./lib/rules/react-in-jsx-scope'),
   'jsx-uses-vars': require('./lib/rules/jsx-uses-vars'),
   'jsx-handler-names': require('./lib/rules/jsx-handler-names'),
@@ -38,7 +43,9 @@ var allRules = {
   'jsx-space-before-closing': require('./lib/rules/jsx-space-before-closing'),
   'no-direct-mutation-state': require('./lib/rules/no-direct-mutation-state'),
   'forbid-component-props': require('./lib/rules/forbid-component-props'),
+  'forbid-elements': require('./lib/rules/forbid-elements'),
   'forbid-prop-types': require('./lib/rules/forbid-prop-types'),
+  'forbid-foreign-prop-types': require('./lib/rules/forbid-foreign-prop-types'),
   'prefer-es6-class': require('./lib/rules/prefer-es6-class'),
   'jsx-key': require('./lib/rules/jsx-key'),
   'no-string-refs': require('./lib/rules/no-string-refs'),
@@ -53,16 +60,14 @@ var allRules = {
   'style-prop-object': require('./lib/rules/style-prop-object'),
   'no-unused-prop-types': require('./lib/rules/no-unused-prop-types'),
   'no-children-prop': require('./lib/rules/no-children-prop'),
-  'no-comment-textnodes': require('./lib/rules/no-comment-textnodes'),
-  'require-extension': require('./lib/rules/require-extension'),
-  'wrap-multilines': require('./lib/rules/wrap-multilines'),
+  'void-dom-elements-no-children': require('./lib/rules/void-dom-elements-no-children'),
   'jsx-tag-spacing': require('./lib/rules/jsx-tag-spacing')
 };
 
 function filterRules(rules, predicate) {
   var result = {};
   for (var key in rules) {
-    if (rules.hasOwnProperty(key) && predicate(rules[key])) {
+    if (has(rules, key) && predicate(rules[key])) {
       result[key] = rules[key];
     }
   }
@@ -72,10 +77,10 @@ function filterRules(rules, predicate) {
 function configureAsError(rules) {
   var result = {};
   for (var key in rules) {
-    if (!rules.hasOwnProperty(key)) {
+    if (!has(rules, key)) {
       continue;
     }
-    result['react/' + key] = 2;
+    result[`react/${key}`] = 2;
   }
   return result;
 }
@@ -94,7 +99,7 @@ module.exports = {
   rules: allRules,
   configs: {
     recommended: {
-      plugin: [
+      plugins: [
         'react'
       ],
       parserOptions: {
@@ -104,23 +109,30 @@ module.exports = {
       },
       rules: {
         'react/display-name': 2,
+        'react/jsx-key': 2,
+        'react/jsx-no-comment-textnodes': 2,
         'react/jsx-no-duplicate-props': 2,
+        'react/jsx-no-target-blank': 2,
         'react/jsx-no-undef': 2,
         'react/jsx-uses-react': 2,
         'react/jsx-uses-vars': 2,
+        'react/no-children-prop': 2,
+        'react/no-danger-with-children': 2,
         'react/no-deprecated': 2,
         'react/no-direct-mutation-state': 2,
         'react/no-find-dom-node': 2,
         'react/no-is-mounted': 2,
-        'react/no-unknown-property': 2,
         'react/no-render-return-value': 2,
+        'react/no-string-refs': 2,
+        'react/no-unescaped-entities': 2,
+        'react/no-unknown-property': 2,
         'react/prop-types': 2,
         'react/react-in-jsx-scope': 2,
         'react/require-render-return': 2
       }
     },
     all: {
-      plugin: [
+      plugins: [
         'react'
       ],
       parserOptions: {

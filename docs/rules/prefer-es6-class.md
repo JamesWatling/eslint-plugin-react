@@ -1,12 +1,12 @@
-# Enforce ES5 or ES6 class for React Components (prefer-es6-class)
+# Enforce ES5 or ES6 class for React Components (react/prefer-es6-class)
 
-React offers you two way to create traditional components: using the ES5 `React.createClass` method or the new ES6 class system. This rule allow you to enforce one way or another.
+React offers you two way to create traditional components: using the ES5 `create-react-class` module or the new ES6 class system. This rule allow you to enforce one way or another.
 
 ## Rule Options
 
 ```js
 ...
-"prefer-es6-class": [<enabled>, <mode>]
+"react/prefer-es6-class": [<enabled>, <mode>]
 ...
 ```
 
@@ -16,8 +16,8 @@ Will enforce ES6 classes for React Components. This is the default mode.
 
 The following patterns are considered warnings:
 
-```js
-var Hello = React.createClass({
+```jsx
+var Hello = createReactClass({
   render: function() {
     return <div>Hello {this.props.name}</div>;
   }
@@ -26,7 +26,7 @@ var Hello = React.createClass({
 
 The following patterns are not considered warnings:
 
-```js
+```jsx
 class Hello extends React.Component {
   render() {
     return <div>Hello {this.props.name}</div>;
@@ -40,7 +40,7 @@ Will enforce ES5 classes for React Components
 
 The following patterns are considered warnings:
 
-```js
+```jsx
 class Hello extends React.Component {
   render() {
     return <div>Hello {this.props.name}</div>;
@@ -50,8 +50,8 @@ class Hello extends React.Component {
 
 The following patterns are not considered warnings:
 
-```js
-var Hello = React.createClass({
+```jsx
+var Hello = createReactClass({
   render: function() {
     return <div>Hello {this.props.name}</div>;
   }

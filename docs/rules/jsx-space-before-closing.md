@@ -1,4 +1,6 @@
-# Validate spacing before closing bracket in JSX (jsx-space-before-closing)
+# Validate spacing before closing bracket in JSX (react/jsx-space-before-closing)
+
+**Deprecation notice**: This rule is deprecated. Please use the `"beforeSelfClosing"` option of the [jsx-tag-spacing](https://github.com/yannickcr/eslint-plugin-react/blob/master/docs/rules/jsx-tag-spacing.md) rule instead.
 
 Enforce or forbid spaces before the closing bracket of self-closing JSX elements.
 
@@ -12,14 +14,14 @@ This rule takes one argument. If it is `"always"` then it warns whenever a space
 
 The following patterns are considered warnings when configured `"always"`:
 
-```js
+```jsx
 <Hello/>
 <Hello firstname="John"/>
 ```
 
 The following patterns are not considered warnings when configured `"always"`:
 
-```js
+```jsx
 <Hello />
 <Hello firstName="John" />
 <Hello
@@ -30,14 +32,14 @@ The following patterns are not considered warnings when configured `"always"`:
 
 The following patterns are considered warnings when configured `"never"`:
 
-```js
+```jsx
 <Hello />
 <Hello firstName="John" />
 ```
 
 The following patterns are not considered warnings when configured `"never"`:
 
-```js
+```jsx
 <Hello/>
 <Hello firstname="John"/>
 <Hello

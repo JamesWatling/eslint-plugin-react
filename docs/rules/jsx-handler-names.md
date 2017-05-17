@@ -1,4 +1,4 @@
-# Enforce event handler naming conventions in JSX (jsx-handler-names)
+# Enforce event handler naming conventions in JSX (react/jsx-handler-names)
 
 Ensures that any component or prop methods used to handle events are correctly prefixed.
 
@@ -6,21 +6,21 @@ Ensures that any component or prop methods used to handle events are correctly p
 
 The following patterns are considered warnings:
 
-```js
+```jsx
 <MyComponent handleChange={this.handleChange} />
 ```
 
-```js
+```jsx
 <MyComponent onChange={this.componentChanged} />
 ```
 
 The following patterns are not considered warnings:
 
-```js
+```jsx
 <MyComponent onChange={this.handleChange} />
 ```
 
-```js
+```jsx
 <MyComponent onChange={this.props.onFoo} />
 ```
 
@@ -28,7 +28,7 @@ The following patterns are not considered warnings:
 
 ```js
 ...
-"jsx-handler-names": [<enabled>, {
+"react/jsx-handler-names": [<enabled>, {
   "eventHandlerPrefix": <eventHandlerPrefix>,
   "eventHandlerPropPrefix": <eventHandlerPropPrefix>
 }]

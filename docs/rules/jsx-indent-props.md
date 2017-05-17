@@ -1,4 +1,4 @@
-# Validate props indentation in JSX (jsx-indent-props)
+# Validate props indentation in JSX (react/jsx-indent-props)
 
 This option validates a specific indentation style for props.
 
@@ -33,7 +33,7 @@ It takes an option as the second parameter which can be `"tab"` for tab-based in
 
 ```js
 ...
-"jsx-indent-props": [<enabled>, 'tab'|<number>]
+"react/jsx-indent-props": [<enabled>, 'tab'|<number>]
 ...
 ```
 

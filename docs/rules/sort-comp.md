@@ -1,4 +1,4 @@
-# Enforce component methods order (sort-comp)
+# Enforce component methods order (react/sort-comp)
 
 When creating React components it is more convenient to always follow the same organisation for methods order to helps you to easily find lifecyle methods, event handlers, etc.
 
@@ -6,7 +6,7 @@ When creating React components it is more convenient to always follow the same o
 
 ## Rule Details
 
-With default configuration the following organisation must be followed:
+The default configuration ensures that the following order must be followed:
 
   1. static methods and properties
   2. lifecycle methods: `displayName`, `propTypes`, `contextTypes`, `childContextTypes`, `mixins`, `statics`,`defaultProps`, `constructor`, `getDefaultProps`, `getInitialState`, `state`, `getChildContext`, `componentWillMount`, `componentDidMount`, `componentWillReceiveProps`, `shouldComponentUpdate`, `componentWillUpdate`, `componentDidUpdate`, `componentWillUnmount` (in this order).
@@ -15,8 +15,8 @@ With default configuration the following organisation must be followed:
 
 The following patterns are considered warnings:
 
-```js
-var Hello = React.createClass({
+```jsx
+var Hello = createReactClass({
   render: function() {
     return <div>Hello</div>;
   },
@@ -26,8 +26,8 @@ var Hello = React.createClass({
 
 The following patterns are not considered warnings:
 
-```js
-var Hello = React.createClass({
+```jsx
+var Hello = createReactClass({
   displayName : 'Hello',
   render: function() {
     return <div>Hello</div>;
@@ -39,7 +39,7 @@ var Hello = React.createClass({
 
 This rule can take one argument to customize the components organisation.
 
-```
+```js
 ...
 "react/sort-comp": [<enabled>, { order: <order>, groups: <groups> }]
 ...
@@ -89,7 +89,7 @@ The default configuration is:
 * `lifecycle` is referring to the `lifecycle` group defined in `groups`.
 * `everything-else` is a special group that match all the methods that do not match any of the other groups.
 * `render` is referring to the `render` method.
-* `type-annotations`. This group is not speficied by default, but can be used enforce flow annotations to be at the top.
+* `type-annotations`. This group is not specified by default, but can be used to enforce flow annotations to be at the top.
 
 You can override this configuration to match your needs.
 
@@ -109,8 +109,8 @@ For example, if you want to place your event handlers (`onClick`, `onSubmit`, et
 
 With the above configuration, the following patterns are considered warnings:
 
-```js
-var Hello = React.createClass({
+```jsx
+var Hello = createReactClass({
   render: function() {
     return <div>Hello</div>;
   },
@@ -120,8 +120,8 @@ var Hello = React.createClass({
 
 With the above configuration, the following patterns are not considered warnings:
 
-```js
-var Hello = React.createClass({
+```jsx
+var Hello = createReactClass({
   onClick: function() {},
   render: function() {
     return <div>Hello</div>;
@@ -150,8 +150,8 @@ If you want to split your `render` method into smaller ones and keep them just b
 
 With the above configuration, the following patterns are considered warnings:
 
-```js
-var Hello = React.createClass({
+```jsx
+var Hello = createReactClass({
   renderButton: function() {},
   onClick: function() {},
   render: function() {
@@ -162,8 +162,8 @@ var Hello = React.createClass({
 
 With the above configuration, the following patterns are not considered warnings:
 
-```js
-var Hello = React.createClass({
+```jsx
+var Hello = createReactClass({
   onClick: function() {},
   renderButton: function() {},
   render: function() {
@@ -188,7 +188,7 @@ If you want to flow annotations to be at the top:
 
 With the above configuration, the following patterns are considered warnings:
 
-```js
+```jsx
 class Hello extends React.Component<any, Props, void> {
   onClick() { this._someElem = true; }
   props: Props;
@@ -201,7 +201,7 @@ class Hello extends React.Component<any, Props, void> {
 
 With the above configuration, the following patterns are not considered warnings:
 
-```js
+```jsx
 type Props = {};
 class Hello extends React.Component<any, Props, void> {
   props: Props;
